@@ -12,12 +12,24 @@ window.requestAnimFrame = (function(){
 })();
 
 var add_event_listeners = function() {
-  // body.addEventListener("keydown", key_down, false);
-  // body.addEventListener("keyup", key_up, false);
-  // body.addEventListener("keypress", key_press, false);
+  body.addEventListener("keydown", key_down, false);
+  body.addEventListener("keyup", key_up, false);
+  body.addEventListener("keypress", key_press, false);
   // body.addEventListener("mousedown", mouse_down, false);
   // body.addEventListener("mouseup", mouse_up, false);
   // body.addEventListener("mousemove", mouse_move, false);
+};
+
+var key_down = function(e) {
+  game.key_down(e);
+};
+
+var key_up = function(e) {
+  game.key_up(e);
+};
+
+var key_press = function(e) {
+  game.key_press(e);
 };
 
 var init_browser = function() {
@@ -25,8 +37,8 @@ var init_browser = function() {
 	body = document.getElementsByTagName("body")[0];
 	canvas = document.createElement("canvas");
 	canvas.id = "canvas";
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight - 5;
+	canvas.width = window.innerWidth - 15;
+	canvas.height = window.innerHeight - 25;
 	context = canvas.getContext('2d');
   context.font = "16px Arial";
   context.fillStyle = "black";
@@ -42,7 +54,7 @@ var init = function() {
 };
 
 var loop = function(time) {
-  console.log('debug: time is ' + time);
+  //console.log('debug: time is ' + time);
   requestAnimFrame(loop);
   context.clearRect(0, 0, canvas.width, canvas.height);
   game.render(time);

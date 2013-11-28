@@ -27,6 +27,21 @@ describe("Game", function() {
     });
   });
 
+  describe ("event handling", function() {
+    it ("should have a key_down function with arity of one (1)", function() {
+      expect(typeof game.key_down).toBe("function");
+      expect(game.key_down.length).toEqual(1);
+    });
+    it ("should have a key_up function with arity of one (1)", function() {
+      expect(typeof game.key_up).toBe("function");
+      expect(game.key_up.length).toEqual(1);
+    });
+    it ("should have a key_press function with arity of one (1)", function() {
+      expect(typeof game.key_press).toBe("function");
+      expect(game.key_press.length).toEqual(1);
+    });
+  });
+
   describe ("other stuff", function() {
     it ("should have a local ufo object", function() {
       expect(game.ufo).toBeDefined();
@@ -36,4 +51,5 @@ describe("Game", function() {
       expect(game.lastTick).toBeDefined();
     });
   });
+
 });

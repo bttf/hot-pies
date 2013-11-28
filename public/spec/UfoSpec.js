@@ -28,5 +28,11 @@ describe("Ufo", function() {
     it ("should have an 'fps'", function() {
       expect(ufo.fps).toBeDefined();
     });
+    it ("should have a 'movement' string", function() {
+      expect(typeof ufo.movement).toBe("string");
+    });
+    it ("should have a 'speed' defined", function() {
+      expect(ufo.speed).toBeDefined();
+    });
   });
 });

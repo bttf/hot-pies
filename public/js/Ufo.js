@@ -7,6 +7,10 @@ function Ufo() {
 
   this.fps = 1000/6;
 
+  this.movement = "still";
+
+  this.speed = 5;
+
   this.frame = 0;
   this.frames = [];
 
@@ -18,5 +22,5 @@ function Ufo() {
 }
 
 Ufo.prototype.onImageLoad = function() {
-  console.log('debug: onImageLoad function called');
+  //console.log('debug: onImageLoad function called');
 };
