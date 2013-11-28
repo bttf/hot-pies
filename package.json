@@ -1,0 +1,32 @@
+{
+  "name": "node-canvas-hotplate",
+  "version": "0.0.0",
+  "description": "What you need to get going with an HTML5/Canvas game via node.js",
+  "main": "app.js",
+  "dependencies": {
+    "express": "*",
+    "consolidate": "~0.9.1",
+    "path": "~0.4.9",
+    "mustache": "~0.7.2"
+  },
+  "scripts": {
+    "start" : "node app.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bttf/node-canvas-hotplate.git"
+  },
+  "keywords": [
+    "game",
+    "html5",
+    "canvas",
+    "node",
+    "javascript"
+  ],
+  "author": "bttf",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/bttf/node-canvas-hotplate/issues"
+  }
+}
