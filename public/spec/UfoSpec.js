@@ -28,6 +28,19 @@ describe("Ufo", function() {
     it ("ufo class should maintain a lastTick var", function() {
       expect(ufo.lastTick).toBeDefined();
     });
+    it ("needs a 'tilt' defined", function() {
+      expect(ufo.tilt).toBeDefined();
+    });
+    it ("tilt should be not-equal to zero when movement is either left or right", function() {
+      var time = 9999;
+      ufo.movement = "left";
+      ufo.render(time);
+      expect(ufo.tilt).not.toBe(0);
+
+      ufo.movement = "right";
+      ufo.render(time);
+      expect(ufo.tilt).not.toBe(0);
+    });
   });
 
   describe("drawing", function() {
@@ -42,6 +55,10 @@ describe("Ufo", function() {
     it ("should use context to drawImage", function() {
       var x = {
         drawImage: function() {},
+        save: function() {},
+        translate: function() {},
+        rotate: function() {},
+        restore: function() {},
       };
       spyOn(x, 'drawImage');
       ufo.draw(x);
