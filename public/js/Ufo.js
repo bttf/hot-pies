@@ -14,6 +14,8 @@ function Ufo() {
   this.frame = 0;
   this.frames = [];
 
+  this.lastTick = 0;
+
   for (var i = 0; i < assets.length; i++) {
     this.frames.push(new Image());
     this.frames[i].src = assets[i];
@@ -23,4 +25,30 @@ function Ufo() {
 
 Ufo.prototype.onImageLoad = function() {
   //console.log('debug: onImageLoad function called');
+};
+
+Ufo.prototype.render = function(time) {
+  if (time > (this.lastTick + this.fps)) {
+    this.frame = (this.frame + 1) % this.frames.length;
+    this.lastTick = time;
+  }
+
+  switch(this.movement) {
+    case "up":
+      this.y -= this.speed;
+      break;
+    case "down":
+      this.y += this.speed;
+      break;
+    case "left":
+      this.x -= this.speed;
+      break;
+    case "right":
+      this.x += this.speed;
+      break;
+  }
+};
+
+Ufo.prototype.draw = function(context) {
+  context.drawImage(this.frames[this.frame], this.x, this.y);
 };

@@ -22,8 +22,8 @@ describe("Game", function() {
       expect(typeof game.draw).toBe('function');
     });
 
-    it ("should accept two (2) parameters (context and time)", function() {
-      expect(game.draw.length).toEqual(2);
+    it ("should accept one parameter (context)", function() {
+      expect(game.draw.length).toEqual(1);
     });
   });
 
@@ -45,10 +45,6 @@ describe("Game", function() {
   describe ("other stuff", function() {
     it ("should have a local ufo object", function() {
       expect(game.ufo).toBeDefined();
-    });
-
-    it ("should keep a 'lastTick' var for time keeping", function() {
-      expect(game.lastTick).toBeDefined();
     });
   });
 

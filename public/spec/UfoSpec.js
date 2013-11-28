@@ -18,6 +18,37 @@ describe("Ufo", function() {
     });
   });
 
+  describe ("rendering", function() {
+    it ("should have a render function", function() {
+      expect(typeof ufo.render).toBe('function');
+    });
+    it ("render should have an arity of one", function() {
+      expect(ufo.render.length).toEqual(1);
+    });
+    it ("ufo class should maintain a lastTick var", function() {
+      expect(ufo.lastTick).toBeDefined();
+    });
+  });
+
+  describe("drawing", function() {
+    it ("should have a draw function", function() {
+      expect(typeof ufo.draw).toBe('function');
+    });
+
+    it ("draw function should accept one param (context)", function() {
+      expect(ufo.draw.length).toEqual(1);
+    });
+
+    it ("should use context to drawImage", function() {
+      var x = {
+        drawImage: function() {},
+      };
+      spyOn(x, 'drawImage');
+      ufo.draw(x);
+      expect(x.drawImage).toHaveBeenCalled();
+    });
+  });
+
   describe("stateful stuff", function() {
     it ("should have an 'x'", function() {
       expect(ufo.x).toBeDefined();
