@@ -1,5 +1,5 @@
-# node-canvas-hotplate
-Ready-to-go node HTML5/Canvas app.
+# hot-pies
+A shoot 'em up adventure involving cows, UFOs and farmers.
 
 ### Steps
 1. 'npm install'
