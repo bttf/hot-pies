@@ -76,8 +76,8 @@ describe("Ufo", function() {
     it ("should have a 'beam' var that contains an image", function() {
       expect(Object.prototype.toString.call(ufo.beam)).toBe("[object HTMLImageElement]");
     });
-    it ("'beam_count' to pace beams; initialized at 1", function() {
-      expect(ufo.beam_count).toEqual(1);
+    it ("'beam_count' to pace beams; initialized at 0", function() {
+      expect(ufo.beam_count).toEqual(0);
     });
   });
 
