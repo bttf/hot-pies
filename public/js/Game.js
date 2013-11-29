@@ -37,7 +37,6 @@ Game.prototype.key_down = function(e) {
 Game.prototype.key_up = function(e) {
   switch(e.keyCode) {
     case 32:
-      this.ufo.beam_count = 0;
     case 37:
     case 38:
     case 39:
