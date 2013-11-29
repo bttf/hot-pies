@@ -1,6 +1,7 @@
 function Ufo() {
-  var assets = ['img/ufo1.png',
-                'img/ufo2.png'];
+  var assets = ['img/big_ufo1.png',
+                'img/big_ufo2.png'];
+  var beam_png = 'img/ufo_beam.png';
 
   this.x = 0;
   this.y = 0;
@@ -14,6 +15,16 @@ function Ufo() {
   this.frames = [];
 
   this.lastTick = 0;
+
+  this.is_beaming = false;
+  this.beam_fps = 1000/2;
+  this.beam_tick = 0;
+  this.beam_count = 0;
+  this.beam = new Image();
+  this.beam.src = beam_png;
+  this.beam_target_y = 1000;
+  this.beam_x = 0;
+  this.beam_y = 0;
 
   for (var i = 0; i < assets.length; i++) {
     this.frames.push(new Image());
@@ -50,15 +61,33 @@ Ufo.prototype.render = function(time) {
     case "still":
       this.tilt = 0;
       break;
+    case "beaming":
+      this.beam_x = (this.x + (this.frames[this.frame].width / 4));
+      this.beam_y = (this.y + (this.frames[this.frame].height));
+      if (time > (this.beam_tick + this.beam_fps)) {
+        console.log('debug: hey, a beam should appear');
+        if (this.beam_count * this.beam.height + this.beam_y < this.beam_target_y) {
+          console.log('debug: here is beam count' + this.beam_count);
+          this.beam_count++;
+          this.beam_tick = time;
+        }
+      }
+      break;
   }
 };
 
 Ufo.prototype.draw = function(context) {
-  if (this.tilt != 0) { 
-      drawRotatedImage(context, this.frames[this.frame], this.x, this.y, this.tilt);
+  if (this.tilt != 0 && this.is_beaming == false) { 
+    drawRotatedImage(context, this.frames[this.frame], this.x, this.y, this.tilt);
   }
   else {
     context.drawImage(this.frames[this.frame], this.x, this.y);
+  }
+
+  if (this.movement === "beaming") {
+    for (var i = 0; i < this.beam_count; i++) {
+      context.drawImage(this.beam, this.beam_x, ((this.y + this.frames[this.frame].height) + (i * this.beam.height)));
+    }
   }
 };
 

@@ -66,6 +66,21 @@ describe("Ufo", function() {
     });
   });
 
+  describe("ufo beam functionality", function() {
+    it ("should have a 'is_beaming' flag", function() {
+      expect(ufo.is_beaming).toBeDefined();
+    });
+    it ("should have a 'beam_fps' to govern beam framerate", function() {
+      expect(ufo.beam_fps).toBeDefined();
+    });
+    it ("should have a 'beam' var that contains an image", function() {
+      expect(Object.prototype.toString.call(ufo.beam)).toBe("[object HTMLImageElement]");
+    });
+    it ("'beam_count' to pace beams; initialized at 1", function() {
+      expect(ufo.beam_count).toEqual(1);
+    });
+  });
+
   describe("stateful stuff", function() {
     it ("should have an 'x'", function() {
       expect(ufo.x).toBeDefined();
