@@ -1,7 +1,6 @@
 function Ufo() {
   var assets = ['img/ufo1.png',
                 'img/ufo2.png'];
-  //var beam_png = 'img/ufo_beam.png';
 
   this.ufoBeam = new UfoBeam();
 
@@ -17,16 +16,6 @@ function Ufo() {
   this.frames = [];
 
   this.lastTick = 0;
-  
-  //this.is_beaming = false;
-  //this.beam_fps = 1000/2;
-  //this.beam_tick = 0;
-  //this.beam_count = 0;
-  //this.beam = new Image();
-  //this.beam.src = beam_png;
-  //this.beam_target_y = 1000;
-  //this.beam_x = 0;
-  //this.beam_y = 0;
 
   for (var i = 0; i < assets.length; i++) {
     this.frames.push(new Image());
@@ -79,9 +68,6 @@ Ufo.prototype.draw = function(context) {
   }
 
   if (this.movement === "beaming") {
-    //for (var i = 0; i < this.beam_count; i++) {
-      //context.drawImage(this.beam, this.beam_x, ((this.y + this.frames[this.frame].height) + (i * this.beam.height)));
-    //}
     this.ufoBeam.draw(context, this);
   }
 };
