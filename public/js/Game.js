@@ -7,11 +7,11 @@ Game.prototype.init = function(canvasWidth, canvasHeight) {
 };
 
 Game.prototype.render = function(time) {
-  AI.render.ufos.attack(time);
+  this.AI.render.ufos.attack(time);
 };
 
 Game.prototype.draw = function(context) {
-  AI.draw.ufos.attack(context);
+  this.AI.draw.ufos.attack(context);
 };
 
 Game.prototype.key_down = function(e) {
