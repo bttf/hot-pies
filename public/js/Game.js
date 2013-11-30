@@ -1,5 +1,6 @@
 function Game() {
   this.ufo = new Ufo();
+  this.cow = new Cow(255, 200);
 }
 
 Game.prototype.init = function() {
@@ -7,10 +8,12 @@ Game.prototype.init = function() {
 
 Game.prototype.render = function(time) {
   this.ufo.render(time);
+  this.cow.render(time);
 };
 
 Game.prototype.draw = function(context) {
   this.ufo.draw(context);
+  this.cow.draw(context);
 };
 
 Game.prototype.key_down = function(e) {
