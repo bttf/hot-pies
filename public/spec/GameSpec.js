@@ -42,10 +42,4 @@ describe("Game", function() {
     });
   });
 
-  describe ("other stuff", function() {
-    it ("should have a local ufo object", function() {
-      expect(game.ufo).toBeDefined();
-    });
-  });
-
 });

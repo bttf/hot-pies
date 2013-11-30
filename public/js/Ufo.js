@@ -1,11 +1,11 @@
-function Ufo() {
+function Ufo(x = 0, y = 0) {
   var assets = ['img/ufo1.png',
                 'img/ufo2.png'];
 
   this.ufoBeam = new UfoBeam();
 
-  this.x = 0;
-  this.y = 0;
+  this.x = x;
+  this.y = y;
 
   this.fps = 1000/6;
   this.movement = "still";

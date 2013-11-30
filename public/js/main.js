@@ -50,7 +50,7 @@ var init_browser = function() {
 
 var init = function() {
   init_browser();
-  game.init();
+  game.init(canvas.width, canvas.height);
 };
 
 var loop = function(time) {
