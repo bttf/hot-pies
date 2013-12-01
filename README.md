@@ -1,3 +1,4 @@
+![Skeet-shootin' UFOs](https://raw.github.com/bttf/hot-pies/master/skeet-shotting-UFOs.png)
 # hot-pies
 A shoot 'em up adventure involving cows, UFOs and farmers.
 

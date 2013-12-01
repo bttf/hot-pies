@@ -1,6 +1,8 @@
 function Cow(x = 0, y = 0) {
-  var assets = ['img/cow1.png',
-                'img/cow2.png'];
+  var assets = ['img/cow1_left.png',
+                'img/cow2_left.png',
+                'img/cow1_right.png',
+                'img/cow2_right.png'];
 
   this.x = x;
   this.y = y;
@@ -27,18 +29,19 @@ Cow.prototype.render = function(time) {
     case "left":
       if (time > (this.lastTick + this.fps)) {
         this.x -= this.speed;
-        this.frame = (this.frame + 1) % this.frames.length;
+        this.frame = (this.frame + 1) % 2;
         this.lastTick = time;
       }
       break;
     case "right":
       if (time > (this.lastTick + this.fps)) {
         this.x += this.speed;
-        this.frame = (this.frame + 1) % this.frames.length;
+        this.frame = (((this.frame % 2) + 1) % 2) + 2;
         this.lastTick = time;
       }
       break;
     case "beaming":
+      this.y -= 2;
       break;
   }
 };
