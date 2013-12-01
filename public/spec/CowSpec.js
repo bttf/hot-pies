@@ -3,19 +3,26 @@ describe("Cow.js", function() {
   beforeEach(function() {
     cow = new Cow();
   });
+  describe("constructor", function() {
+    it ("should have a 'movement' var", function() {
+      expect(cow.movement).toBeDefined();
+    });
 
-  it ("should have a 'movement' var", function() {
-    expect(cow.movement).toBeDefined();
-  });
+    it ("should have 'speed' defined", function() {
+      expect(cow.speed).toBeDefined();
+    });
 
-  it ("should have 'speed' defined", function() {
-    expect(cow.speed).toBeDefined();
-  });
+    it ("needs 'fps' defined", function() {
+      expect(cow.fps).toBeDefined();
+    });
 
-  it ("needs 'fps' defined", function() {
-    expect(cow.fps).toBeDefined();
+    it ("should have a 'frames' array with image objects", function() {
+      expect(cow.frames.length).toBeGreaterThan(0);
+      for (var i = 0; i < cow.frames.length; i++) {
+        expect(Object.prototype.toString.call(cow.frames[i])).toBe("[object HTMLImageElement]");
+      }
+    });
   });
-  
   describe("render", function() {
     it ("should expect one param (time)", function() {
       expect(cow.render.length).toEqual(1);
