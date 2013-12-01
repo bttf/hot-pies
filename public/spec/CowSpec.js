@@ -11,6 +11,10 @@ describe("Cow.js", function() {
   it ("should have 'speed' defined", function() {
     expect(cow.speed).toBeDefined();
   });
+
+  it ("needs 'fps' defined", function() {
+    expect(cow.fps).toBeDefined();
+  });
   
   describe("render", function() {
     it ("should expect one param (time)", function() {
@@ -29,6 +33,16 @@ describe("Cow.js", function() {
       cow.movement = "left";
       cow.render((new Date).getTime());
       expect(cow.x).toEqual(cow_x - cow_speed);
+    });
+    it ("lastTick should equal time parameter after render with left or right", function() {
+      var x = 12345;
+      cow.movement = "left";
+      cow.render(x);
+      expect(cow.lastTick).toEqual(x);
+      cow.movement = "right";
+      x = 67890;
+      cow.render(x);
+      expect(cow.lastTick).toEqual(x);
     });
   });
 

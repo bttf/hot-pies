@@ -11,6 +11,9 @@ function Cow(x = 0, y = 0) {
   this.frame = 0;
   this.frames = [];
 
+  this.lastTick = 0;
+  this.fps = 1000/5;
+
   for (var i = 0; i < assets.length; i++) {
     this.frames.push(new Image());
     this.frames[i].src = assets[i];
@@ -22,10 +25,18 @@ Cow.prototype.render = function(time) {
     case "still":
       break;
     case "left":
-      this.x -= this.speed;
+      if (time > (this.lastTick + this.fps)) {
+        this.x -= this.speed;
+        this.frame = (this.frame + 1) % this.frames.length;
+        this.lastTick = time;
+      }
       break;
     case "right":
-      this.x += this.speed;
+      if (time > (this.lastTick + this.fps)) {
+        this.x += this.speed;
+        this.frame = (this.frame + 1) % this.frames.length;
+        this.lastTick = time;
+      }
       break;
     case "beaming":
       break;

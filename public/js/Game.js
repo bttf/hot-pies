@@ -4,51 +4,49 @@ function Game() {
 Game.prototype.init = function(canvasWidth, canvasHeight) {
   this.AI = new AI(canvasWidth, canvasHeight);
   this.AI.init.ufos.attack();
+  this.cow = new Cow(255, (canvasHeight - 50));
 };
 
 Game.prototype.render = function(time) {
   this.AI.render.ufos.attack(time);
+  this.cow.render(time);
 };
 
 Game.prototype.draw = function(context) {
+  this.cow.draw(context);
   this.AI.draw.ufos.attack(context);
 };
 
 Game.prototype.key_down = function(e) {
-  // for (var i = 0; i < this.ufos.length; i++) {
-  //   var ufo = this.ufos[i];
-  //   switch (e.keyCode) {
-  //     case 32:
-  //       ufo.movement = "beaming";
-  //       break;
-  //     case 37:
-  //       ufo.movement = "left";
-  //       break;
-  //     case 38:
-  //       ufo.movement = "up";
-  //       break;
-  //     case 39:
-  //       ufo.movement = "right";
-  //       break;
-  //     case 40:
-  //       ufo.movement = "down";
-  //       break;
-  //   }
-  // }
+  switch (e.keyCode) {
+    case 32:
+      this.cow.movement = "beaming";
+      break;
+    case 37:
+      this.cow.movement = "left";
+      break;
+    case 38:
+      this.cow.movement = "up";
+      break;
+    case 39:
+      this.cow.movement = "right";
+      break;
+    case 40:
+      this.cow.movement = "down";
+      break;
+  }
 };
 
 Game.prototype.key_up = function(e) {
-  // for (var i = 0; i < this.ufos.length; i++) {
-  //   switch(e.keyCode) {
-  //     case 32:
-  //     case 37:
-  //     case 38:
-  //     case 39:
-  //     case 40:
-  //       this.ufos[i].movement = "still";
-  //       break;
-  //   }
-  // }
+  switch(e.keyCode) {
+    case 32:
+    case 37:
+    case 38:
+    case 39:
+    case 40:
+      this.cow.movement = "still";
+      break;
+  }
 };
 
 Game.prototype.key_press = function(e) {
