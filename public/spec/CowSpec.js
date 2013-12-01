@@ -60,27 +60,75 @@ describe("Cow.js", function() {
         cow.render((new Date).getTime());
         expect(cow.y).toEqual(cow_y - cow_speed);
       });
-      it ("should maintain frames 2,3 if previous movement was 'right'", function() {
-        var time = (new Date).getTime();
-        cow.movement = "right";
-        cow.render(time);
-        cow.lastTick = 0;
-
-        cow.movement = "up";
-        cow.render(time);
-        var result = (cow.frame == 2 || cow.frame == 3);
-        expect(result).toBe(true);
+    });
+    describe("updateFrame method", function() {
+      it ("should exist", function() {
+        expect(typeof cow.updateFrame).toBe("function");
       });
-      it ("should maintain frames 0,1 if previous movement was 'left'", function() {
+      it ("should update frame to 0 or 1 if movement is 'left'", function() {
         var time = (new Date).getTime();
         cow.movement = "left";
-        cow.render(time);
-        cow.lastTick = 0;
-
-        cow.movement = "up";
-        cow.render(time);
+        //cow.render(time);
+        cow.updateFrame();
         var result = (cow.frame == 0 || cow.frame == 1);
         expect(result).toBe(true);
+        cow.lastTick = 0;
+
+        if (cow.frame == 0) {
+          cow.updateFrame();
+          expect(cow.frame).toEqual(1);
+        }
+        else {
+          cow.updateFrame();
+          expect(cow.frame).toEqual(0);
+        }
+      });
+      it ("should update frame to 2 or 3 if movement is 'right'", function() {
+        var time = (new Date).getTime();
+        cow.movement = "right";
+        cow.updateFrame();
+        var result = (cow.frame == 2 || cow.frame == 3);
+        expect(result).toBe(true);
+
+        if (cow.frame == 2) {
+          cow.updateFrame();
+          expect(cow.frame).toEqual(3);
+        }
+        else {
+          cow.updateFrame();
+          expect(cow.frame).toEqual(2);
+        }
+      });
+      it ("should maintain 0,1 or 2,3 when movement is 'up'", function() {
+        cow.movement = "right";
+        cow.updateFrame();
+        cow.movement = "up";
+        cow.updateFrame();
+        var result = (cow.frame == 2 || cow.frame == 3);
+        expect(result).toBe(true);
+        if (cow.frame == 2) {
+          cow.updateFrame();
+          expect(cow.frame).toEqual(3);
+        }
+        else {
+          cow.updateFrame();
+          expect(cow.frame).toEqual(2);
+        }
+
+        cow.movement = "left";
+        cow.updateFrame();
+        cow.movement = "up";
+        cow.updateFrame();
+        result = (cow.frame == 0 || cow.frame == 1);
+        expect(result).toBe(true);
+        if (cow.frame == 0) {
+          cow.updateFrame();
+          expect(cow.frame).toEqual(1);
+        }
+        else {
+          cow.updateFrame();
+          expect(cow.frame).toEqual(0);
+        }
       });
     });
   });
