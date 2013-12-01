@@ -41,6 +41,22 @@ describe("Cow.js", function() {
       cow.render((new Date).getTime());
       expect(cow.x).toEqual(cow_x - cow_speed);
     });
+    it ("should decrease x AND decrease y by speed if movement is equal to 'up-left'", function() {
+      var cow_x = cow.x;
+      var cow_y = cow.y;
+      cow.movement = "up-left";
+      cow.render((new Date).getTime());
+      expect(cow.x).toEqual(cow_x - cow.speed);
+      expect(cow.y).toEqual(cow_y - cow.speed);
+    });
+    it ("should increase x AND decrease y by speed if movement is equal to 'up-right", function() {
+      var cow_x = cow.x;
+      var cow_y = cow.y;
+      cow.movement = "up-right";
+      cow.render((new Date).getTime());
+      expect(cow.x).toEqual(cow_x + cow.speed);
+      expect(cow.y).toEqual(cow_y - cow.speed);
+    });
     it ("lastTick should equal time parameter after render with left or right", function() {
       var x = 12345;
       cow.movement = "left";

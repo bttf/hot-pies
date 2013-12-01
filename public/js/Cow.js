@@ -27,6 +27,20 @@ Cow.prototype.render = function(time) {
     case "still":
       break;
     case "up-left":
+      if (this.delayTickHasPassed(time)) {
+        this.x -= (this.speed);
+        this.y -= (this.speed);
+        this.updateFrame();
+        this.lastTick = time;
+      }
+      break;
+    case "up-right":
+      if (this.delayTickHasPassed(time)) {
+        this.x += (this.speed);
+        this.y -= (this.speed);
+        this.updateFrame();
+        this.lastTick = time;
+      }
       break;
     case "up":
       if (this.delayTickHasPassed(time)) {
@@ -68,19 +82,19 @@ Cow.prototype.delayTickHasPassed = function(time) {
 
 Cow.prototype.updateFrame = function() {
   switch (this.movement) {
-    case "up":
+    case "left":
+      this.frame = (this.frame + 1) % 2;
+      break;
+    case "right":
+      this.frame = (((this.frame % 2) + 1) % 2) + 2;
+      break;
+    default:
       if (this.frame == 2 || this.frame == 3) {
         this.frame = (((this.frame % 2) + 1) % 2) + 2;
       }
       else {
         this.frame = (this.frame + 1) % 2;
       }
-      break;
-    case "left":
-      this.frame = (this.frame + 1) % 2;
-      break;
-    case "right":
-      this.frame = (((this.frame % 2) + 1) % 2) + 2;
       break;
   }
 };

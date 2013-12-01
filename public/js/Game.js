@@ -23,13 +23,24 @@ Game.prototype.key_down = function(e) {
       this.cow.movement = "beaming";
       break;
     case 37:
-      this.cow.movement = "left";
+      if (this.cow.movement === "up") 
+        this.cow.movement = "up-left";
+      else
+        this.cow.movement = "left";
       break;
     case 38:
-      this.cow.movement = "up";
+      if (this.cow.movement === "left")
+        this.cow.movement = "up-left";
+      else if (this.cow.movement === "right")
+        this.cow.movement = "up-right";
+      else
+        this.cow.movement = "up";
       break;
     case 39:
-      this.cow.movement = "right";
+      if (this.cow.movement === "up")
+        this.cow.movement = "up-right";
+      else
+        this.cow.movement = "right";
       break;
     case 40:
       this.cow.movement = "down";
