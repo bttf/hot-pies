@@ -14,9 +14,7 @@ function UfoBeam() {
     this.beam_x = (ufo.x + (ufo.frames[ufo.frame].width / 4));
     this.beam_y = (ufo.y + (ufo.frames[ufo.frame].height));
     if (time > (this.beam_tick + this.beam_fps)) {
-      console.log('debug: hey, a beam should appear');
       if (this.beam_count * this.beam.height + this.beam_y < this.beam_target_y) {
-        //console.log('debug: here is beam count' + this.beam_count);
         this.beam_count++;
         this.beam_tick = time;
       }

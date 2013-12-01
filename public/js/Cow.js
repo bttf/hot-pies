@@ -26,17 +26,26 @@ Cow.prototype.render = function(time) {
   switch (this.movement) {
     case "still":
       break;
+    case "up-left":
+      break;
+    case "up":
+      if (this.delayTickHasPassed(time)) {
+        this.y -= this.speed;
+        this.updateFrame();
+        this.lastTick = time;
+      }
+      break;
     case "left":
-      if (time > (this.lastTick + this.fps)) {
+      if (this.delayTickHasPassed(time)) {
         this.x -= this.speed;
-        this.frame = (this.frame + 1) % 2;
+        this.updateFrame();
         this.lastTick = time;
       }
       break;
     case "right":
-      if (time > (this.lastTick + this.fps)) {
+      if (this.delayTickHasPassed(time)) {
         this.x += this.speed;
-        this.frame = (((this.frame % 2) + 1) % 2) + 2;
+        this.updateFrame();
         this.lastTick = time;
       }
       break;
@@ -48,4 +57,30 @@ Cow.prototype.render = function(time) {
 
 Cow.prototype.draw = function(context) {
   context.drawImage(this.frames[this.frame], this.x, this.y);
+};
+
+Cow.prototype.delayTickHasPassed = function(time) {
+  if (time > this.lastTick + this.fps) {
+    return true;
+  }
+  return false;
+};
+
+Cow.prototype.updateFrame = function() {
+  switch (this.movement) {
+    case "up":
+      if (this.frame == 2 || this.frame == 3) {
+        this.frame = (((this.frame % 2) + 1) % 2) + 2;
+      }
+      else {
+        this.frame = (this.frame + 1) % 2;
+      }
+      break;
+    case "left":
+      this.frame = (this.frame + 1) % 2;
+      break;
+    case "right":
+      this.frame = (((this.frame % 2) + 1) % 2) + 2;
+      break;
+  }
 };
