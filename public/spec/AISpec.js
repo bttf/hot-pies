@@ -40,10 +40,10 @@ describe("AI", function() {
             expect(ai.cows[i].x).not.toBeLessThan(leftBound);
           }
         });
-        it ("should set target_x ±75 from x for each cow", function() {
+        it ("should set target_x within canvasWidth", function() {
           for (var i = 0; i < ai.cows.length; i++) {
-            expect(ai.cows[i].target_x).not.toBeGreaterThan(ai.cows[i].x + 75);
-            expect(ai.cows[i].target_x).not.toBeLessThan(ai.cows[i].x - 75);
+            expect(ai.cows[i].target_x).not.toBeGreaterThan(canvasWidth);
+            expect(ai.cows[i].target_x).not.toBeLessThan(0);
           }
         });
         it ("should set target_y to something, i don't know yet", function() {
@@ -98,13 +98,13 @@ describe("AI", function() {
           beforeEach(function() {
             ai.init.cows();
           });
-          it ("should set movement to up-right if x < target_x and y is < target_y", function() {
+          it ("should set movement to up-right if x < target_x-5 and y is > target_y", function() {
             var cow;
             for (var i = 0; i < ai.cows.length; i++) {
               cow = ai.cows[i];
               cow.x = 5;
               cow.y = 10;
-              cow.target_x = 10;
+              cow.target_x = 20;
               cow.target_y = 5;
             }
             ai.render.cows((new Date).getTime());
@@ -113,13 +113,13 @@ describe("AI", function() {
               expect(cow.movement).toBe("up-right");
             }
           });
-          it ("should set movement to up-left if x > target_x and y is < target_y", function() {
+          it ("should set movement to up-left if x > target_x+5 and y is < target_y", function() {
             var cow;
             for (var i = 0; i < ai.cows.length; i++) {
               cow = ai.cows[i];
               cow.x = 10;
               cow.y = 10;
-              cow.target_x = 5;
+              cow.target_x = 0;
               cow.target_y = 5;
             }
             ai.render.cows((new Date).getTime());
@@ -128,13 +128,13 @@ describe("AI", function() {
               expect(cow.movement).toBe("up-left");
             }
           });
-          it ("should set movement to left if x > target_x and y == target_y", function() {
+          it ("should set movement to left if x > target_x+5 and y == target_y", function() {
             var cow;
             for (var i = 0; i < ai.cows.length; i++) {
               cow = ai.cows[i];
               cow.x = 10;
               cow.y = 5;
-              cow.target_x = 5;
+              cow.target_x = 0;
               cow.target_y = 5;
             }
             ai.render.cows((new Date).getTime());
@@ -143,13 +143,13 @@ describe("AI", function() {
               expect(cow.movement).toBe("left");
             }
           });
-          it ("should set movement to right if x < target_x and y == target_y", function() {
+          it ("should set movement to right if x < target_x-5 and y == target_y", function() {
             var cow;
             for (var i = 0; i < ai.cows.length; i++) {
               cow = ai.cows[i];
               cow.x = 5;
               cow.y = 10;
-              cow.target_x = 10;
+              cow.target_x = 20;
               cow.target_y = 10;
             }
             ai.render.cows((new Date).getTime());

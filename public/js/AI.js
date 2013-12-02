@@ -13,7 +13,6 @@ function AI(canvasWidth, canvasHeight) {
         var x = Math.floor((Math.random() * (canvasWidth - (x_padding * 2)) + x_padding)),
             y = canvasHeight + (new Cow()).frames[0].height + (Math.floor(Math.random() * 50)),
             plusOrMinus = Math.random() < 0.5 ? -1 : 1,
-            // target_x = x + (plusOrMinus * (Math.floor(Math.random() * canvasWidth))),
             target_x = Math.floor((Math.random() * (canvasWidth - (x_padding * 2)) + x_padding)),
             target_y = canvasHeight - (Math.floor(Math.random() * (canvasHeight * .1)) + (canvasHeight * .1));
         ai.cows.push(new Cow(x, y, target_x, target_y));
@@ -42,7 +41,7 @@ function AI(canvasWidth, canvasHeight) {
       var thisCow;
       for (var i = 0; i < ai.cows.length; i++) {
         thisCow = ai.cows[i];
-        if (thisCow.x < thisCow.target_x - 10) {
+        if (thisCow.x < thisCow.target_x - 5) {
           if (thisCow.y > thisCow.target_y) {
             thisCow.movement = "up-right";
           }
@@ -50,7 +49,7 @@ function AI(canvasWidth, canvasHeight) {
             thisCow.movement = "right";
           }
         }
-        else if (thisCow.x > thisCow.target_x + 10) {
+        else if (thisCow.x > thisCow.target_x + 5) {
           if (thisCow.y > thisCow.target_y) {
             thisCow.movement = "up-left";
           }
