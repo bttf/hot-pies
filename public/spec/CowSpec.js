@@ -7,22 +7,24 @@ describe("Cow.js", function() {
     it ("should have a 'movement' var", function() {
       expect(cow.movement).toBeDefined();
     });
-
     it ("should have 'speed' defined", function() {
       expect(cow.speed).toBeDefined();
     });
-
     it ("needs 'fps' defined", function() {
       expect(cow.fps).toBeDefined();
     });
-
     it ("should have a 'frames' array with image objects", function() {
       expect(cow.frames.length).toBeGreaterThan(0);
       for (var i = 0; i < cow.frames.length; i++) {
         expect(Object.prototype.toString.call(cow.frames[i])).toBe("[object HTMLImageElement]");
       }
     });
+    it ("should have target_x and target_y defined", function() {
+      expect(cow.target_x).toBeDefined();
+      expect(cow.target_y).toBeDefined();
+    });
   });
+
   describe("render", function() {
     it ("should expect one param (time)", function() {
       expect(cow.render.length).toEqual(1);

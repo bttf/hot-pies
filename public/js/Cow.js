@@ -1,4 +1,4 @@
-function Cow(x = 0, y = 0) {
+function Cow(x = 0, y = 0, target_x = 0, target_y = 0) {
   var assets = ['img/cow1_left.png',
                 'img/cow2_left.png',
                 'img/cow1_right.png',
@@ -6,6 +6,9 @@ function Cow(x = 0, y = 0) {
 
   this.x = x;
   this.y = y;
+
+  this.target_x = target_x;
+  this.target_y = target_y;
 
   this.movement = "still";
   this.speed = 5;
