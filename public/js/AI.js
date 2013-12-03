@@ -1,7 +1,7 @@
 function AI(canvasWidth, canvasHeight) {
   var ai = this,
-      numOfCows = 8;
-      numOfUfos = 7;
+      numOfCows = 1;
+      numOfUfos = 4;
 
   this.ufos = [];
   this.cows = [];
@@ -11,22 +11,25 @@ function AI(canvasWidth, canvasHeight) {
       var x_padding = canvasWidth * .1;
       for (var i = 0; i < numOfCows; i++) {
         var x = Math.floor((Math.random() * (canvasWidth - (x_padding * 2)) + x_padding)),
-            y = canvasHeight + (new Cow()).frames[0].height + (Math.floor(Math.random() * 50)),
+            y = canvasHeight + (new Cow()).frames[0].height 
             plusOrMinus = Math.random() < 0.5 ? -1 : 1,
-            target_x = Math.floor((Math.random() * (canvasWidth - (x_padding * 2)) + x_padding)),
+            //target_x = Math.floor((Math.random() * (canvasWidth - (x_padding * 2)) + x_padding)),
+            target_x = (Math.floor(Math.random() * 175) * plusOrMinus) + x;
             target_y = canvasHeight - (Math.floor(Math.random() * (canvasHeight * .1)) + (canvasHeight * .1));
         ai.cows.push(new Cow(x, y, target_x, target_y));
       }
     },
     "ufos": {
       "attack": function() {
+        var leftStartingPoint = canvasWidth + ((new Ufo()).frames[0].width) * 2,
+            rightStartingPoint = -((new Ufo()).frames[0].width) * 2;
         var x, y;
         for (var i = 0; i < numOfUfos; i++) {
           if (i % 2 == 0) {
-            x = canvasWidth + ((new Ufo()).frames[0].width) * 2;
+            x = leftStartingPoint;
           }
           else {
-            x = -((new Ufo()).frames[0].width) * 2;
+            x = rightStartingPoint;
           }
           y = Math.floor(Math.random() * 200);
           ai.ufos.push(new Ufo(x, y));
@@ -61,6 +64,12 @@ function AI(canvasWidth, canvasHeight) {
           thisCow.movement = "up";
         }
         else { 
+          if (ai.ufos.length > 0) {
+            for (var i = 0; i < ai.ufos.length; i++) {
+              ai.ufos[i].target_x = thisCow.target_x;
+              ai.ufos[i].target_y = thisCow.target_y + thisCow.frames[0].height;
+            }
+          }
           thisCow.movement = "still";
         }
         thisCow.render(time);
