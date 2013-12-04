@@ -3,18 +3,18 @@ function Game() {
 
 Game.prototype.init = function(canvasWidth, canvasHeight) {
   this.AI = new AI(canvasWidth, canvasHeight);
-  this.AI.init.ufos.attack();
+  this.AI.init.ufos();
   this.AI.init.cows();
 };
 
 Game.prototype.render = function(time) {
-  this.AI.render.ufos.attack(time);
+  this.AI.render.ufos(time);
   this.AI.render.cows(time);
 };
 
 Game.prototype.draw = function(context) {
   this.AI.draw.cows(context);
-  this.AI.draw.ufos.attack(context);
+  this.AI.draw.ufos(context);
 };
 
 Game.prototype.key_down = function(e) {

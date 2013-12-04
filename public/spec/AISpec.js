@@ -1,13 +1,12 @@
 describe("AI", function() {
+  var ai;
+  var canvasHeight = 500; 
+  var canvasWidth = 500;
+
+  beforeEach(function() {
+    ai = new AI(canvasWidth, canvasHeight);
+  });
   describe("nested object structure", function() {
-    var ai,
-        canvasHeight = 500,
-        canvasWidth = 500;
-
-    beforeEach(function() {
-      ai = new AI(canvasWidth, canvasHeight);
-    });
-
     describe("init", function() {
       it ("should have an init object", function() {
         expect(typeof ai.init).toBe('object');
@@ -34,8 +33,8 @@ describe("AI", function() {
         });
         it ("should set x to a random value within center 80% of width", function() {
           for (var i = 0; i < ai.cows.length; i++) {
-            var leftBound = (canvasWidth * .2) / 2,
-                rightBound = (canvasWidth - leftBound);
+            var leftBound = (canvasWidth * .2) / 2;
+            var rightBound = (canvasWidth - leftBound);
             expect(ai.cows[i].x).not.toBeGreaterThan(rightBound);
             expect(ai.cows[i].x).not.toBeLessThan(leftBound);
           }
@@ -52,39 +51,34 @@ describe("AI", function() {
           }
         });
       });
-
       describe ("ufos", function() {
-        it ("should have a ufos object inside init", function() {
-          expect(typeof ai.init.ufos).toBe('object');
+        it ("should be a function", function() {
+          expect(typeof ai.init.ufos).toBe("function");
         });
-        it ("init ufos should have an attack method", function() {
-          expect(typeof ai.init.ufos.attack).toBe('function');
-        });
-        it ("ufos attack should populate AI.ufos with objects", function() {
-          ai.init.ufos.attack();
+        it ("should populate AI.ufos with objects", function() {
+          ai.init.ufos();
           expect(ai.ufos.length).toBeGreaterThan(0);
-        });
-        it ("should add a 'target_x' property to ufo objets", function() {
-          ai.init.ufos.attack();
-          for (var i = 0; i < ai.ufos.length; i++) {
-            expect(ai.ufos[i].target_x).toBeDefined();
-          }
         });
       });
     });
+
     describe("render", function() {
       it ("should have a render object", function() {
         expect(typeof ai.render).toBe('object');
       });
       describe ("ufos", function() {
-        it ("should have a ufos object inside render", function() {
-          expect(typeof ai.render.ufos).toBe('object');
+        it ("should be a function", function() {
+          expect(typeof ai.render.ufos).toBe("function");
         });
-        it ("render.ufos should have an attack method", function() {
-          expect(typeof ai.render.ufos.attack).toBe('function');
+        it ("render.ufos should accept one parameter (time)", function() {
+          expect(ai.render.ufos.length).toEqual(1);
         });
-        it ("render.ufos.attack should accept one parameter (time)", function() {
-          expect(ai.render.ufos.attack.length).toEqual(1);
+        it ("movement should remain 'still' if target_x is undefined", function() {
+          for (var i = 0; i < ai.ufos.length; i++) {
+            delete ai.ufos[i].target_x;
+            ai.render.ufos((new Date).getTime());
+            expect(ai.ufos.movement).toBe("still");
+          }
         });
       });
       describe ("cows", function() {
@@ -93,101 +87,6 @@ describe("AI", function() {
         });
         it ("should expect one param for time", function() {
           expect(ai.render.cows.length).toEqual(1);
-        });
-        describe("deciding whether to move or not", function() {
-          beforeEach(function() {
-            ai.init.cows();
-          });
-          it ("should set movement to up-right if x < target_x-5 and y is > target_y", function() {
-            var cow;
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              cow.x = 5;
-              cow.y = 10;
-              cow.target_x = 20;
-              cow.target_y = 5;
-            }
-            ai.render.cows((new Date).getTime());
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              expect(cow.movement).toBe("up-right");
-            }
-          });
-          it ("should set movement to up-left if x > target_x+5 and y is < target_y", function() {
-            var cow;
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              cow.x = 10;
-              cow.y = 10;
-              cow.target_x = 0;
-              cow.target_y = 5;
-            }
-            ai.render.cows((new Date).getTime());
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              expect(cow.movement).toBe("up-left");
-            }
-          });
-          it ("should set movement to left if x > target_x+5 and y == target_y", function() {
-            var cow;
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              cow.x = 10;
-              cow.y = 5;
-              cow.target_x = 0;
-              cow.target_y = 5;
-            }
-            ai.render.cows((new Date).getTime());
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              expect(cow.movement).toBe("left");
-            }
-          });
-          it ("should set movement to right if x < target_x-5 and y == target_y", function() {
-            var cow;
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              cow.x = 5;
-              cow.y = 10;
-              cow.target_x = 20;
-              cow.target_y = 10;
-            }
-            ai.render.cows((new Date).getTime());
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              expect(cow.movement).toBe("right");
-            }
-          });
-          it ("should set movement to up if x = target_x and y > target_y", function() {
-            var cow;
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              cow.x = 5;
-              cow.y = 10;
-              cow.target_x = 5;
-              cow.target_y = 5;
-            }
-            ai.render.cows((new Date).getTime());
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              expect(cow.movement).toBe("up");
-            }
-          });
-          it ("should set movement to still if x = target_x and y == target_y", function() {
-            var cow;
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              cow.x = 5;
-              cow.y = 5;
-              cow.target_x = 5;
-              cow.target_y = 5;
-            }
-            ai.render.cows((new Date).getTime());
-            for (var i = 0; i < ai.cows.length; i++) {
-              cow = ai.cows[i];
-              expect(cow.movement).toBe("still");
-            }
-          });
         });
       });
     });
@@ -204,16 +103,120 @@ describe("AI", function() {
         });
       });
       describe ("ufos", function() {
-        it ("should have a ufos object inside draw", function() {
-          expect(typeof ai.draw.ufos).toBe('object');
+        it ("should be a function", function() {
+          expect(typeof ai.draw.ufos).toBe("function");
         });
-        it ("draw.ufos should have an attack method", function() {
-          expect(typeof ai.draw.ufos.attack).toBe('function');
-        });
-        it ("draw.ufos.attack should accept one parameter (context)", function() {
-          expect(ai.draw.ufos.attack.length).toEqual(1);
+        it ("draw.ufos should accept one parameter (context)", function() {
+          expect(ai.draw.ufos.length).toEqual(1);
         });
       });
     });
   });
+
+  describe("setUfoMovement", function() {
+    var ufo;
+    beforeEach(function() {
+      ufo = {};
+    });
+    it ("should exist as a function", function() {
+      expect(typeof ai.setUfoMovement).toBe("function");
+    });
+    it ("should expect one parameter (ufo)", function() {
+      expect(ai.setUfoMovement.length).toEqual(1);
+    });
+    it ("should set ufo movement to 'still' if target_x is undefined", function() {
+      ufo.movement = "something";
+      ai.setUfoMovement(ufo);
+      expect(ufo.movement).toBe("still");
+    });
+    it ("should set movement to right if x < target_x-5", function() {
+      ufo.x = 5;
+      ufo.target_x = 20;
+      ufo.movement = "still";
+      ai.setUfoMovement(ufo);
+      expect(ufo.movement).toBe("right");
+    });
+    it ("should set movement to left if x > target_x+5", function() {
+      ufo.x = 20;
+      ufo.target_x = 5;
+      ufo.movement = "still";
+      ai.setUfoMovement(ufo);
+      expect(ufo.movement).toBe("left");
+    });
+    it ("should set movement to still if x is > target_x-5and < target_x+5", function() {
+      ufo.x = 20;
+      ufo.target_x = 20;
+      ufo.movement = "something";
+      ai.setUfoMovement(ufo);
+      expect(ufo.movement).toBe("still");
+    });
+  });
+
+  describe("setCowMovement", function() {
+    var cow;
+    beforeEach(function() {
+      cow = {};
+    });
+    it ("should exist as a function", function() {
+      expect(typeof ai.setCowMovement).toBe("function");
+    });
+    it ("should accept one parameter (cow)", function() {
+      expect(ai.setCowMovement.length).toEqual(1);
+    });
+    it ("should set movement to up-right if x < target_x-5 and y is > target_y", function() {
+      cow.x = 5;
+      cow.y = 10;
+      cow.target_x = 20;
+      cow.target_y = 5;
+      cow.movement = "still";
+      ai.setCowMovement(cow);
+      expect(cow.movement).toBe("up-right");
+    });
+    it ("should set movement to up-left if x > target_x+5 and y is < target_y", function() {
+      cow.x = 10;
+      cow.y = 10;
+      cow.target_x = 0;
+      cow.target_y = 5;
+      cow.movement = "still";
+      ai.setCowMovement(cow);
+      expect(cow.movement).toBe("up-left");
+    });
+    it ("should set movement to left if x > target_x+5 and y == target_y", function() {
+      cow.x = 10;
+      cow.y = 5;
+      cow.target_x = 0;
+      cow.target_y = 5;
+      cow.movement = "still";
+      ai.setCowMovement(cow);
+      expect(cow.movement).toBe("left");
+    });
+    it ("should set movement to right if x < target_x-5 and y == target_y", function() {
+      cow.x = 5;
+      cow.y = 10;
+      cow.target_x = 20;
+      cow.target_y = 10;
+      cow.movement = "still";
+      ai.setCowMovement(cow);
+      expect(cow.movement).toBe("right");
+    });
+    it ("should set movement to up if x = target_x and y > target_y", function() {
+      cow.x = 5;
+      cow.y = 10;
+      cow.target_x = 5;
+      cow.target_y = 5;
+      cow.movement = "still";
+      ai.setCowMovement(cow);
+      expect(cow.movement).toBe("up");
+    });
+    it ("should set movement to still if x = target_x and y == target_y", function() {
+      cow.x = 5;
+      cow.y = 5;
+      cow.target_x = 5;
+      cow.target_y = 5;
+      cow.movement = "still";
+      ai.setCowMovement(cow);
+      expect(cow.movement).toBe("still");
+    });
+  });
 });
+
