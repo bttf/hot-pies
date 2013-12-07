@@ -1,4 +1,4 @@
-var game = new Game();
+var game = {};
 
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       || 
@@ -46,6 +46,7 @@ var init_browser = function() {
   add_event_listeners();
   horizon = (canvas.height / 2);
   center_axis = (canvas.width / 2);
+  game = new Game(canvas.width, canvas.height);
 };
 
 var init = function() {

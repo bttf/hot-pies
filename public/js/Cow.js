@@ -1,14 +1,17 @@
-function Cow(x = 0, y = 0, target_x = 0, target_y = 0) {
+//function Cow(x = 0, y = 0, target_x = 0, target_y = 0) {
+function Cow(canvasWidth, canvasHeight) {
   var assets = ['img/cow1_left.png',
                 'img/cow2_left.png',
                 'img/cow1_right.png',
                 'img/cow2_right.png'];
 
-  this.x = x;
-  this.y = y;
+  var x_padding = canvasWidth * .1;
+  this.x = Math.floor((Math.random() * (canvasWidth - (x_padding * 2)) + x_padding));
+  this.y = canvasHeight + Math.floor(Math.random() + 20);
 
-  this.target_x = target_x;
-  this.target_y = target_y;
+  var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+  this.target_x = this.x + (plusOrMinus * 100);
+  this.target_y = canvasHeight - (Math.floor(Math.random() * 100) + 46);
 
   this.movement = "still";
   this.speed = 5;
@@ -26,6 +29,8 @@ function Cow(x = 0, y = 0, target_x = 0, target_y = 0) {
 }
 
 Cow.prototype.render = function(time) {
+  setDirection.call(this);
+
   switch (this.movement) {
     case "still":
       break;
@@ -101,3 +106,28 @@ Cow.prototype.updateFrame = function() {
       break;
   }
 };
+
+function setDirection() {
+  if (this.x < this.target_x - 5) {
+    if (this.y > this.target_y) {
+      this.movement = "up-right";
+    }
+    else {
+      this.movement = "right";
+    }
+  }
+  else if (this.x > this.target_x + 5) {
+    if (this.y > this.target_y) {
+      this.movement = "up-left";
+    }
+    else {
+      this.movement = "left";
+    }
+  }
+  else if (this.y > this.target_y) {
+    this.movement = "up";
+  }
+  else { 
+    this.movement = "still";
+  }
+}

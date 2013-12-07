@@ -1,7 +1,7 @@
 describe("Cow.js", function() {
   var cow;
   beforeEach(function() {
-    cow = new Cow();
+    cow = new Cow(800, 800);
   });
   describe("constructor", function() {
     it ("should have a 'movement' var", function() {

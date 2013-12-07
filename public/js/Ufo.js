@@ -1,4 +1,4 @@
-function Ufo(x = 0, y = 0) {
+function Ufo(target_cow, x = 0, y = 0) {
   var assets = ['img/ufo1.png',
                 'img/ufo2.png'];
 
@@ -11,6 +11,7 @@ function Ufo(x = 0, y = 0) {
   this.movement = "still";
   this.tilt = 0;
   this.speed = 5;
+  this.target_cow = target_cow;
 
   this.frame = 0;
   this.frames = [];

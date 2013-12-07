@@ -1,20 +1,33 @@
 function Game() {
+  this.cows = [];
+  this.ufos = [];
+  this.canvasWidth;
+  this.canvasHeight;
 }
 
 Game.prototype.init = function(canvasWidth, canvasHeight) {
-  this.AI = new AI(canvasWidth, canvasHeight);
-  this.AI.init.ufos();
-  this.AI.init.cows();
+  //this.AI = new AI(canvasWidth, canvasHeight);
+  //this.AI.init.ufos();
+  //this.AI.init.cows();
+  this.canvasWidth = canvasWidth;
+  this.canvasHeight = canvasHeight;
+  this.cows.push(new Cow(canvasWidth, canvasHeight));
 };
 
 Game.prototype.render = function(time) {
-  this.AI.render.ufos(time);
-  this.AI.render.cows(time);
+  //this.AI.render.ufos(time);
+  //this.AI.render.cows(time);
+  this.cows.forEach(function(cow, index, cows) {
+    cow.render(time);
+  });
 };
 
 Game.prototype.draw = function(context) {
-  this.AI.draw.cows(context);
-  this.AI.draw.ufos(context);
+  //this.AI.draw.cows(context);
+  //this.AI.draw.ufos(context);
+  this.cows.forEach(function(cow, index, cows) {
+    cow.draw(context);
+  });
 };
 
 Game.prototype.key_down = function(e) {
