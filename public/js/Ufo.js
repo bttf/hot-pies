@@ -31,7 +31,6 @@ function Ufo(targetCow, canvasWidth, canvasHeight) {
 Ufo.prototype.render = function(time) {
   this.updateFrame(time);
   this.setMovementBasedOnCow();
-
   this.moveUfo();
 };
 

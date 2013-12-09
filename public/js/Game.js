@@ -1,6 +1,7 @@
 function Game() {
   this.cows = [];
   this.ufos = [];
+  this.lineSight = {};
   this.canvasWidth;
   this.canvasHeight;
 }
@@ -10,6 +11,7 @@ Game.prototype.init = function(canvasWidth, canvasHeight) {
   this.canvasHeight = canvasHeight;
   this.cows.push(new Cow(canvasWidth, canvasHeight));
   this.ufos.push(new Ufo(this.cows[0], canvasWidth, canvasHeight));
+  this.lineSight = new LineSight(canvasWidth, canvasHeight);
 };
 
 Game.prototype.render = function(time) {
@@ -23,6 +25,8 @@ Game.prototype.render = function(time) {
 };
 
 Game.prototype.draw = function(context) {
+  this.lineSight.draw(context);
+
   this.cows.forEach(function(cow, index, cows) {
     cow.draw(context);
   });
@@ -33,46 +37,9 @@ Game.prototype.draw = function(context) {
 };
 
 Game.prototype.key_down = function(e) {
-  // switch (e.keyCode) {
-  //   case 32:
-  //     this.cow.movement = "beaming";
-  //     break;
-  //   case 37:
-  //     if (this.cow.movement === "up") 
-  //       this.cow.movement = "up-left";
-  //     else
-  //       this.cow.movement = "left";
-  //     break;
-  //   case 38:
-  //     if (this.cow.movement === "left")
-  //       this.cow.movement = "up-left";
-  //     else if (this.cow.movement === "right")
-  //       this.cow.movement = "up-right";
-  //     else
-  //       this.cow.movement = "up";
-  //     break;
-  //   case 39:
-  //     if (this.cow.movement === "up")
-  //       this.cow.movement = "up-right";
-  //     else
-  //       this.cow.movement = "right";
-  //     break;
-  //   case 40:
-  //     this.cow.movement = "down";
-  //     break;
-  // }
 };
 
 Game.prototype.key_up = function(e) {
-  // switch(e.keyCode) {
-  //   case 32:
-  //   case 37:
-  //   case 38:
-  //   case 39:
-  //   case 40:
-  //     this.cow.movement = "still";
-  //     break;
-  // }
 };
 
 Game.prototype.key_press = function(e) {

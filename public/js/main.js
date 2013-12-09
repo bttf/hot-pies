@@ -33,7 +33,6 @@ var key_press = function(e) {
 };
 
 var init_browser = function() {
-  // console.log('debug: init_browser called');
 	body = document.getElementsByTagName("body")[0];
 	canvas = document.createElement("canvas");
 	canvas.id = "canvas";
@@ -55,7 +54,6 @@ var init = function() {
 };
 
 var loop = function(time) {
-  //console.log('debug: time is ' + time);
   requestAnimFrame(loop);
   context.clearRect(0, 0, canvas.width, canvas.height);
   game.render(time);
