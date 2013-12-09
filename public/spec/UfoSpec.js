@@ -1,6 +1,6 @@
 describe("Ufo", function() {
   var cow = new Cow(0,0);
-  var ufo = new Ufo(0, 0, cow));
+  var ufo = new Ufo(0, 0, cow);
 
   describe("loading image assets", function() {
     it ("should have a 'frames' array", function() {

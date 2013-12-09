@@ -1,4 +1,3 @@
-//function Cow(x = 0, y = 0, target_x = 0, target_y = 0) {
 function Cow(canvasWidth, canvasHeight) {
   var assets = ['img/cow1_left.png',
                 'img/cow2_left.png',
@@ -29,8 +28,66 @@ function Cow(canvasWidth, canvasHeight) {
 }
 
 Cow.prototype.render = function(time) {
-  setDirection.call(this);
+  this.setDirection();
+  this.moveCow(time);
+};
 
+Cow.prototype.draw = function(context) {
+  context.drawImage(this.frames[this.frame], this.x, this.y);
+};
+
+Cow.prototype.delayTickHasPassed = function(time) {
+  if (time > this.lastTick + this.fps) {
+    return true;
+  }
+  return false;
+};
+
+Cow.prototype.updateFrame = function() {
+  switch (this.movement) {
+    case "left":
+      this.frame = (this.frame + 1) % 2;
+      break;
+    case "right":
+      this.frame = (((this.frame % 2) + 1) % 2) + 2;
+      break;
+    default:
+      if (this.frame == 2 || this.frame == 3) {
+        this.frame = (((this.frame % 2) + 1) % 2) + 2;
+      }
+      else {
+        this.frame = (this.frame + 1) % 2;
+      }
+      break;
+  }
+};
+
+Cow.prototype.setDirection = function() {
+  if (this.x < this.target_x - 5) {
+    if (this.y > this.target_y) {
+      this.movement = "up-right";
+    }
+    else {
+      this.movement = "right";
+    }
+  }
+  else if (this.x > this.target_x + 5) {
+    if (this.y > this.target_y) {
+      this.movement = "up-left";
+    }
+    else {
+      this.movement = "left";
+    }
+  }
+  else if (this.y > this.target_y) {
+    this.movement = "up";
+  }
+  else { 
+    this.movement = "still";
+  }
+};
+
+Cow.prototype.moveCow = function(time) {
   switch (this.movement) {
     case "still":
       break;
@@ -76,58 +133,3 @@ Cow.prototype.render = function(time) {
       break;
   }
 };
-
-Cow.prototype.draw = function(context) {
-  context.drawImage(this.frames[this.frame], this.x, this.y);
-};
-
-Cow.prototype.delayTickHasPassed = function(time) {
-  if (time > this.lastTick + this.fps) {
-    return true;
-  }
-  return false;
-};
-
-Cow.prototype.updateFrame = function() {
-  switch (this.movement) {
-    case "left":
-      this.frame = (this.frame + 1) % 2;
-      break;
-    case "right":
-      this.frame = (((this.frame % 2) + 1) % 2) + 2;
-      break;
-    default:
-      if (this.frame == 2 || this.frame == 3) {
-        this.frame = (((this.frame % 2) + 1) % 2) + 2;
-      }
-      else {
-        this.frame = (this.frame + 1) % 2;
-      }
-      break;
-  }
-};
-
-function setDirection() {
-  if (this.x < this.target_x - 5) {
-    if (this.y > this.target_y) {
-      this.movement = "up-right";
-    }
-    else {
-      this.movement = "right";
-    }
-  }
-  else if (this.x > this.target_x + 5) {
-    if (this.y > this.target_y) {
-      this.movement = "up-left";
-    }
-    else {
-      this.movement = "left";
-    }
-  }
-  else if (this.y > this.target_y) {
-    this.movement = "up";
-  }
-  else { 
-    this.movement = "still";
-  }
-}
