@@ -1,17 +1,21 @@
-function Ufo(target_cow, x = 0, y = 0) {
+function Ufo(targetCow, canvasWidth, canvasHeight) {
   var assets = ['img/ufo1.png',
                 'img/ufo2.png'];
 
+  this.canvasWidth = canvasWidth;
+  this.canvasHeight = canvasHeight;
+
   this.ufoBeam = new UfoBeam();
 
-  this.x = x;
-  this.y = y;
+  this.x = this.initX(canvasWidth);
+  this.y = this.initY(canvasHeight);
+
 
   this.fps = 1000/6;
   this.movement = "still";
   this.tilt = 0;
   this.speed = 5;
-  this.target_cow = target_cow;
+  this.targetCow = targetCow;
 
   this.frame = 0;
   this.frames = [];
@@ -21,43 +25,14 @@ function Ufo(target_cow, x = 0, y = 0) {
   for (var i = 0; i < assets.length; i++) {
     this.frames.push(new Image());
     this.frames[i].src = assets[i];
-    this.frames[i].onload = this.onImageLoad;
   }
 }
 
-Ufo.prototype.onImageLoad = function() {
-  //console.log('debug: onImageLoad function called');
-};
-
 Ufo.prototype.render = function(time) {
-  if (time > (this.lastTick + this.fps)) {
-    this.frame = (this.frame + 1) % this.frames.length;
-    this.lastTick = time;
-  }
+  this.updateFrame(time);
+  this.setMovementBasedOnCow();
 
-  switch(this.movement) {
-    case "up":
-      this.y -= this.speed;
-      break;
-    case "down":
-      this.y += this.speed;
-      break;
-    case "left":
-      this.tilt = -20;
-      this.x -= this.speed;
-      break;
-    case "right":
-      this.tilt = 20;
-      this.x += this.speed;
-      break;
-    case "still":
-      this.ufoBeam.reset();
-      this.tilt = 0;
-      break;
-    case "beaming":
-      this.ufoBeam.render(time, this);
-      break;
-  }
+  this.moveUfo();
 };
 
 Ufo.prototype.draw = function(context) {
@@ -82,4 +57,60 @@ function drawRotatedImage(context, image, x, y, angle) {
   context.rotate(angle * TO_RADIANS);
   context.drawImage(image, -(image.width/2), -(image.height/2));
   context.restore(); 
+};
+
+Ufo.prototype.updateFrame = function(time) {
+  if (time > (this.lastTick + this.fps)) {
+    this.frame = (this.frame + 1) % this.frames.length;
+    this.lastTick = time;
+  }
+};
+
+Ufo.prototype.moveUfo = function() {
+  switch(this.movement) {
+    case "left":
+      this.tilt = -20;
+      this.x -= this.speed;
+      break;
+    case "right":
+      this.tilt = 20;
+      this.x += this.speed;
+      break;
+    case "still":
+      this.ufoBeam.reset();
+      this.tilt = 0;
+      break;
+    case "beaming":
+      this.ufoBeam.render(time, this);
+      break;
+  }
+}
+
+Ufo.prototype.setMovementBasedOnCow = function() {
+  if (this.targetCow.movement === "still") {
+    var cow = this.targetCow;
+    if (this.x > cow.x + 5) {
+      this.movement = "left";
+    }
+    else if (this.x < cow.x - 5) {
+      this.movement = "right";
+    }
+    else {
+      this.movement = "still";
+    }
+  }
+};
+
+Ufo.prototype.initX = function(canvasWidth) {
+  var heads = Math.random() < 0.5 ? false : true;
+  if (heads) {
+    return  -(Math.floor(Math.random() * 100) + 150);
+  }
+  else {
+    return (Math.floor(Math.random() * 100) + canvasWidth);
+  }
+};
+
+Ufo.prototype.initY = function(canvasHeight) {
+  return Math.floor(Math.random() * 200);
 };
