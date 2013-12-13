@@ -196,11 +196,25 @@ describe("Cow.js", function() {
     it ("should update frame to 0 or 1 if movement is 'left'", function() {
       var time = (new Date).getTime();
       cow.movement = "left";
-      //cow.render(time);
       cow.updateFrame();
       var result = (cow.frame == 0 || cow.frame == 1);
       expect(result).toBe(true);
-      cow.lastTick = 0;
+
+      if (cow.frame == 0) {
+        cow.updateFrame();
+        expect(cow.frame).toEqual(1);
+      }
+      else {
+        cow.updateFrame();
+        expect(cow.frame).toEqual(0);
+      }
+    });
+    it ("should update frame to 0 or 1 if movement is 'up-left'", function() {
+      var time = (new Date).getTime();
+      cow.movement = "up-left";
+      cow.updateFrame();
+      var result = (cow.frame == 0 || cow.frame == 1);
+      expect(result).toBe(true);
 
       if (cow.frame == 0) {
         cow.updateFrame();
@@ -214,6 +228,22 @@ describe("Cow.js", function() {
     it ("should update frame to 2 or 3 if movement is 'right'", function() {
       var time = (new Date).getTime();
       cow.movement = "right";
+      cow.updateFrame();
+      var result = (cow.frame == 2 || cow.frame == 3);
+      expect(result).toBe(true);
+
+      if (cow.frame == 2) {
+        cow.updateFrame();
+        expect(cow.frame).toEqual(3);
+      }
+      else {
+        cow.updateFrame();
+        expect(cow.frame).toEqual(2);
+      }
+    });
+    it ("should update frame to 2 or 3 if movement is 'up-right'", function() {
+      var time = (new Date).getTime();
+      cow.movement = "up-right";
       cow.updateFrame();
       var result = (cow.frame == 2 || cow.frame == 3);
       expect(result).toBe(true);

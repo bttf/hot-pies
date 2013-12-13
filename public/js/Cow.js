@@ -44,10 +44,13 @@ Cow.prototype.delayTickHasPassed = function(time) {
 };
 
 Cow.prototype.updateFrame = function() {
+  console.log('debug: this.movement = ' + this.movement);
   switch (this.movement) {
+    case "up-left":
     case "left":
       this.frame = (this.frame + 1) % 2;
       break;
+    case "up-right":
     case "right":
       this.frame = (((this.frame % 2) + 1) % 2) + 2;
       break;

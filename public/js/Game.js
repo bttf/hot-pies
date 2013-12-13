@@ -44,3 +44,7 @@ Game.prototype.key_up = function(e) {
 
 Game.prototype.key_press = function(e) {
 };
+
+Game.prototype.mousemove = function(e) {
+  this.lineSight.mousemove(e);
+};

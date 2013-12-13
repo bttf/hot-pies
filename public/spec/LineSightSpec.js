@@ -23,12 +23,30 @@ describe("LineSight", function() {
     });
   });
 
+  describe("render", function() {
+    beforeEach(function() {
+      lineSight - new LineSight(0, 0);
+    });
+    it ("should accept one parameter (time)", function() {
+      expect(lineSight.render.length).toEqual(1);
+    });
+  });
+
   describe("draw", function() {
     beforeEach(function() {
       lineSight = new LineSight(0, 0);
     });
     it ("should accept one parameter (context)", function() {
       expect(lineSight.draw.length).toEqual(1);
+    });
+  });
+  
+  describe("mousemove", function() {
+    beforeEach(function() {
+      lineSight = new LineSight(0, 0);
+    });
+    it ("should accept one parameter (e)", function() {
+      expect(lineSight.mousemove.length).toEqual(1);
     });
   });
 });

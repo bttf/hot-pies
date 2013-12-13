@@ -17,7 +17,7 @@ var add_event_listeners = function() {
   body.addEventListener("keypress", key_press, false);
   // body.addEventListener("mousedown", mouse_down, false);
   // body.addEventListener("mouseup", mouse_up, false);
-  // body.addEventListener("mousemove", mouse_move, false);
+  body.addEventListener("mousemove", mouse_move, false);
 };
 
 var key_down = function(e) {
@@ -32,12 +32,17 @@ var key_press = function(e) {
   game.key_press(e);
 };
 
+var mouse_move = function(e) {
+  game.mousemove(e);
+};
+
 var init_browser = function() {
 	body = document.getElementsByTagName("body")[0];
 	canvas = document.createElement("canvas");
 	canvas.id = "canvas";
 	canvas.width = window.innerWidth - 15;
 	canvas.height = window.innerHeight - 25;
+  //canvas.style.cursor = "none";
 	context = canvas.getContext('2d');
   context.font = "16px Arial";
   context.fillStyle = "black";
