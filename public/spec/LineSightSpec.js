@@ -16,10 +16,10 @@ describe("LineSight", function() {
       expect(lineSight.y).toEqual(12345);
     });
     it ("should initialize mouse_x to 0", function() {
-      expect(lineSight.mouse_x).toEqual(0);
+      expect(lineSight.mouseX).toEqual(0);
     });
     it ("should initialize mouse_y to 0", function() {
-      expect(lineSight.mouse_y).toEqual(0);
+      expect(lineSight.mouseY).toEqual(0);
     });
   });
 
