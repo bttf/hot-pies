@@ -12,6 +12,7 @@ Game.prototype.init = function(canvasWidth, canvasHeight) {
   this.cows.push(new Cow(canvasWidth, canvasHeight));
   this.ufos.push(new Ufo(this.cows[0], canvasWidth, canvasHeight));
   this.lineSight = new LineSight(canvasWidth, canvasHeight);
+  this.shotgun = new ShotGun();
 };
 
 Game.prototype.render = function(time) {
@@ -37,6 +38,7 @@ Game.prototype.draw = function(context) {
 };
 
 Game.prototype.key_down = function(e) {
+  this.shotgun.key_down(e);
 };
 
 Game.prototype.key_up = function(e) {
@@ -47,4 +49,8 @@ Game.prototype.key_press = function(e) {
 
 Game.prototype.mousemove = function(e) {
   this.lineSight.mousemove(e);
+};
+
+Game.prototype.mouse_down = function(e) {
+  this.shotgun.mouse_down(e);
 };

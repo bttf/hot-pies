@@ -44,7 +44,6 @@ Cow.prototype.delayTickHasPassed = function(time) {
 };
 
 Cow.prototype.updateFrame = function() {
-  console.log('debug: this.movement = ' + this.movement);
   switch (this.movement) {
     case "up-left":
     case "left":

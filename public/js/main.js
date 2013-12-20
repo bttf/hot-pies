@@ -15,7 +15,7 @@ var add_event_listeners = function() {
   body.addEventListener("keydown", key_down, false);
   body.addEventListener("keyup", key_up, false);
   body.addEventListener("keypress", key_press, false);
-  // body.addEventListener("mousedown", mouse_down, false);
+   body.addEventListener("mousedown", mouse_down, false);
   // body.addEventListener("mouseup", mouse_up, false);
   body.addEventListener("mousemove", mouse_move, false);
 };
@@ -34,6 +34,10 @@ var key_press = function(e) {
 
 var mouse_move = function(e) {
   game.mousemove(e);
+};
+
+var mouse_down = function(e) {
+  game.mouse_down(e);
 };
 
 var init_browser = function() {
