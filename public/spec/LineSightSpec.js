@@ -1,11 +1,13 @@
 describe("LineSight", function() {
   var lineSight;
+
+  beforeEach(function() {
+    lineSight = new LineSight(0, 0);
+  });
+
   describe("constructor", function() {
-    beforeEach(function() {
-      lineSight = new LineSight(0, 0);
-    });
-    it ("should accept an arity of two for canvasWidth and canvasHeight", function() {
-      expect(LineSight.length).toEqual(2);
+    it ("should accept an arity of three for canvasWidth and canvasHeight and shooter obj", function() {
+      expect(LineSight.length).toEqual(3);
     });
     it ("should set x to first param (canvasWidth)", function() {
       var lineSight = new LineSight(12345, 0);
@@ -24,29 +26,54 @@ describe("LineSight", function() {
   });
 
   describe("render", function() {
-    beforeEach(function() {
-      lineSight - new LineSight(0, 0);
-    });
     it ("should accept one parameter (time)", function() {
       expect(lineSight.render.length).toEqual(1);
     });
   });
 
   describe("draw", function() {
-    beforeEach(function() {
-      lineSight = new LineSight(0, 0);
-    });
     it ("should accept one parameter (context)", function() {
       expect(lineSight.draw.length).toEqual(1);
     });
   });
-  
+
   describe("mousemove", function() {
-    beforeEach(function() {
-      lineSight = new LineSight(0, 0);
-    });
     it ("should accept one parameter (e)", function() {
       expect(lineSight.mousemove.length).toEqual(1);
+    });
+  });
+
+  describe('doesIntersect', function() {
+    it ('has arity of one', function() {
+      expect(lineSight.doesIntersect.length).toEqual(1);
+    });
+    it ('returns true if linesight intersects given obj', function() {
+      var obj = {
+        x: 5,
+        y: 5,
+        height: 3,
+        width: 3,
+      };
+      var shooter = {};
+      var lineSight = new LineSight(10, 10, shooter);
+      lineSight.mouseX = 0;
+      lineSight.mouseY = 0;
+      var result = lineSight.doesIntersect(obj);
+      expect(result).toBe(true);
+    });
+    it ('should return false if linesight does not intersect obj', function() {
+      var obj = {
+        x: 5,
+        y: 2, 
+        height: 3,
+        width: 3,
+      };
+      var shooter = {};
+      var lineSight = new LineSight(10, 10, shooter);
+      lineSight.mouseX = 0;
+      lineSight.mouseY = 0;
+      var result = lineSight.doesIntersect(obj);
+      expect(result).toBe(false);
     });
   });
 });

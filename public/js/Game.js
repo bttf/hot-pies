@@ -11,9 +11,9 @@ Game.prototype.init = function(canvasWidth, canvasHeight) {
   this.canvasHeight = canvasHeight;
   this.cows.push(new Cow(canvasWidth, canvasHeight));
   this.ufos.push(new Ufo(this.cows[0], canvasWidth, canvasHeight));
-  this.lineSight = new LineSight(canvasWidth, canvasHeight);
   this.shotgun = new ShotGun();
   this.farmerJohn = new FarmerJohn(canvasWidth, canvasHeight);
+  this.lineSight = new LineSight(canvasWidth, canvasHeight, this.farmerJohn);
 };
 
 Game.prototype.render = function(time) {
@@ -24,8 +24,8 @@ Game.prototype.render = function(time) {
   this.ufos.forEach(function(ufo, index, ufos) {
     ufo.render(time);
   });
-
   this.farmerJohn.render(time);
+  this.lineSight.render(time);
 };
 
 Game.prototype.draw = function(context) {

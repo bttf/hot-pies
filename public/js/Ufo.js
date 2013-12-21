@@ -113,3 +113,6 @@ Ufo.prototype.initX = function(canvasWidth) {
 Ufo.prototype.initY = function(canvasHeight) {
   return Math.floor(Math.random() * 200);
 };
+
+Ufo.prototype.explode = function() {
+};

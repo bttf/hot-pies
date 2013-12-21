@@ -1,14 +1,16 @@
-function LineSight(canvasWidth, canvasHeight) {
-  this.x = canvasWidth;
-  this.y = canvasHeight;
+function LineSight(canvasWidth, canvasHeight, shooter) {
   this.mouseX = 0;
   this.mouseY = 0;
 
-  this.gapFreq = 10;
-  this.gapLength = 5;
+  this.shooter = shooter;
+
+  this.x = canvasWidth;
+  this.y = canvasHeight;
 }
 
 LineSight.prototype.render = function(time) {
+  this.x = this.shooter.x + (this.shooter.frames[0].width / 2);
+  this.y = this.shooter.y + 25;
 };
 
 LineSight.prototype.draw = function(context) {
@@ -36,30 +38,22 @@ LineSight.prototype.mousemove = function(e) {
   }
 };
 
-LineSight.prototype.drawStitch = function(context) {
-  var x1 = this.x;
-  var y1 = this.y;
-  var spacer = 55;
-  var dx = (this.x - this.mouseX) / spacer;
-  var dy = (this.y - this.mouseY) / spacer;
-  var x2 = x1 - dx;
-  var y2 = y1 - dy;
-  var alternate = true;
-  while (x2 > this.mouseX || y2 >= this.mouseY) {
-    if (alternate) {
-      context.beginPath();
-      context.moveTo(x1, y1);
-      context.lineTo(x2, y2);
-      context.lineWidth = 1;
-      context.strokeStyle = 'rgba(255, 0, 0, 1)';
-      context.stroke();
-      alternate = false;
+LineSight.prototype.doesIntersect = function(obj) {
+  var x = this.mouseX;
+  var y = this.mouseY;
+  while (x < this.x) {
+    if (y > obj.y && x > obj.x
+        && y < obj.y + obj.height
+        && x < obj.x + obj.width) {
+      console.log('you just hit obj at %d, %d', obj.x, obj.y);
+      return true;
     }
-    else
-      alternate = true;
-    x1 = x2;
-    y1 = y2;
-    x2 = x1 - dx;
-    y2 = y2 - dy;
+    dx = this.x - this.mouseX;
+    dy = this.y - this.mouseY;
+    x += dx / 20;
+    y += dy / 20;
   }
+  return false;
 };
+
+
