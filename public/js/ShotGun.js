@@ -24,7 +24,7 @@ ShotGun.prototype.key_down = function(e) {
 };
 
 ShotGun.prototype.mouse_down = function(e) {
-  if (this.isCocked && this.cock.currentTime > 0.37) {
+  if (this.isCocked) {
     if (!this.blast.paused) {
       this.blast.pause();
       this.blast.currentTime = 0;
