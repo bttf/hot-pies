@@ -75,5 +75,18 @@ describe("LineSight", function() {
       var result = lineSight.doesIntersect(obj);
       expect(result).toBe(false);
     });
+    it ('should return false if obj passed in is missing properties (x, y, width, height)', function() {
+      var obj = {
+        x: 7,
+        y: 3,
+        height: 4,
+      };
+      var shooter = {};
+      var lineSight = new LineSight(10, 10, shooter);
+      lineSight.mouseX = 0;
+      lineSight.mouseY = 0;
+      var result = lineSight.doesIntersect(obj);
+      expect(result).toBe(false);
+    });
   });
 });

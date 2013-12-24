@@ -10,7 +10,7 @@ Game.prototype.init = function(canvasWidth, canvasHeight) {
   this.canvasWidth = canvasWidth;
   this.canvasHeight = canvasHeight;
   this.cows.push(new Cow(canvasWidth, canvasHeight));
-  this.ufos.push(new Ufo(this.cows[0], canvasWidth, canvasHeight));
+  this.ufos.push(new Ufo(canvasWidth, canvasHeight, this.cows[0]));
   this.shotgun = new ShotGun();
   this.farmerJohn = new FarmerJohn(canvasWidth, canvasHeight);
   this.lineSight = new LineSight(canvasWidth, canvasHeight, this.farmerJohn);
@@ -21,9 +21,10 @@ Game.prototype.render = function(time) {
     cow.render(time);
   });
 
-  this.ufos.forEach(function(ufo, index, ufos) {
-    ufo.render(time);
-  });
+  for (var i = 0; i < this.ufos.length; i++) {
+    this.ufos[i].render(time);
+  }
+
   this.farmerJohn.render(time);
   this.lineSight.render(time);
 };
@@ -54,5 +55,31 @@ Game.prototype.mousemove = function(e) {
 };
 
 Game.prototype.mouse_down = function(e) {
+  if (this.shotgun.isCocked) {
+    var ufo;
+    if (ufo = this.ufoHit()) {
+      ufo.explode();
+    }
+  }
   this.shotgun.mouse_down(e);
 };
+
+Game.prototype.ufoHit = function() {
+  var index;
+  var maxX = 0;
+  for (var i = 0; i < this.ufos.length; i++) {
+    console.log(this.ufos[i]);
+    if (this.lineSight.doesIntersect(this.ufos[i])) {
+      if (this.ufos[i].x > maxX) {
+        maxX = this.ufos[i].x;
+        index = i;
+        console.log('maxX %d', maxX);
+      }
+    }
+  }
+  if (typeof index !== "undefined")
+    return this.ufos[index];
+  else
+    return false;
+};
+

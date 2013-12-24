@@ -1,4 +1,4 @@
-function Ufo(targetCow, canvasWidth, canvasHeight) {
+function Ufo(canvasWidth, canvasHeight, targetCow) {
   var assets = ['img/ufo1.png',
                 'img/ufo2.png'];
 
@@ -10,6 +10,12 @@ function Ufo(targetCow, canvasWidth, canvasHeight) {
   this.x = this.initX(canvasWidth);
   this.y = this.initY(canvasHeight);
 
+  this.explosionPlayed = false;
+  this.explodeTick = 0;
+  this.explodeDelay = 750;
+  this.explosion = new Audio('audio/explosion.ogg');
+  this.explosion.preload = "auto";
+  this.exploding = false;
 
   this.fps = 1000/6;
   this.movement = "still";
@@ -29,21 +35,33 @@ function Ufo(targetCow, canvasWidth, canvasHeight) {
 }
 
 Ufo.prototype.render = function(time) {
-  this.updateFrame(time);
-  this.setMovementBasedOnCow();
-  this.moveUfo();
+  if (this.exploding) {
+    if (time > this.explodeTick) {
+      if (!this.explosionPlayed) {
+        this.explosion.play();
+        this.explosionPlayed = true;
+      }
+    }
+  }
+  else {
+    this.updateFrame(time);
+    this.setMovementBasedOnCow();
+    this.moveUfo();
+  }
 };
 
 Ufo.prototype.draw = function(context) {
-  if (this.tilt != 0 && this.movement != "beaming") { 
-    drawRotatedImage(context, this.frames[this.frame], this.x, this.y, this.tilt);
-  }
-  else {
-    context.drawImage(this.frames[this.frame], this.x, this.y);
-  }
+  if (this.allImagesLoaded()) {
+    if (this.tilt != 0 && this.movement != "beaming") { 
+      drawRotatedImage(context, this.frames[this.frame], this.x, this.y, this.tilt);
+    }
+    else {
+      context.drawImage(this.frames[this.frame], this.x, this.y);
+    }
 
-  if (this.movement === "beaming") {
-    this.ufoBeam.draw(context, this);
+    if (this.movement === "beaming") {
+      this.ufoBeam.draw(context, this);
+    }
   }
 };
 
@@ -115,4 +133,20 @@ Ufo.prototype.initY = function(canvasHeight) {
 };
 
 Ufo.prototype.explode = function() {
+  this.explodeTick = this.lastTick + this.explodeDelay;
+  this.exploding = true;
+};
+
+Ufo.prototype.allImagesLoaded = function() {
+  var allComplete = true;
+  for (var i = 0; i < this.frames.length; i++) {
+    if (this.frames[i].complete != true) {
+      allComplete = false;
+    }
+  }
+  if (allComplete) {
+    this.width = this.frames[0].width;
+    this.height = this.frames[0].height;
+  };
+  return allComplete;
 };

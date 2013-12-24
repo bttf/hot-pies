@@ -1,5 +1,9 @@
 describe("Game", function() {
-  var game = new Game();
+  var game;
+  beforeEach(function() {
+    game = new Game();
+    game.init(800, 800);
+  });
 
   describe("'init' function", function() {
     it ("should have an 'init' function", function() {
@@ -42,4 +46,44 @@ describe("Game", function() {
     });
   });
 
+  describe("ufoHit", function() {
+    it ("should return the closest ufo that intersects with linesight", function() {
+      var ufo1 = {
+        name: "ufo1",
+        x: 5,
+        y: 5,
+        width: 20,
+        height: 20,
+      };
+      var ufo2 = {
+        name: "ufo2",
+        x: 8,
+        y: 8,
+        width: 20,
+        height: 20,
+      };
+      game.ufos = [ufo1, ufo2];
+      var result = game.ufoHit();
+      expect(result.name).toBe("ufo2");
+    });
+    it ("should return false if no ufos instersect", function() {
+      var ufo1 = {
+        name: "ufo1",
+        x: 100,
+        y: 5,
+        width: 2,
+        height: 2,
+      };
+      var ufo2 = {
+        name: "ufo2",
+        x: 10,
+        y: 2,
+        width: 2,
+        height: 2,
+      };
+      game.ufos = [ufo1, ufo2];
+      var result = game.ufoHit();
+      expect(result).toBe(false);
+    });
+  });
 });

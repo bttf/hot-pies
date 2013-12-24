@@ -1,6 +1,9 @@
 describe("Ufo", function() {
-  var cow = new Cow(0,0);
-  var ufo = new Ufo(cow, 0, 0);
+  var cow, ufo;
+  beforeEach(function() {
+    cow = new Cow(0,0);
+    ufo = new Ufo(0, 0, cow);
+  });
 
   describe("loading image assets", function() {
     it ("should have a 'frames' array", function() {
@@ -215,6 +218,55 @@ describe("Ufo", function() {
         result = false;
       }
       expect(result).toBe(true);
+    });
+  });
+
+  describe("explode", function() {
+    it ("should exist as a function", function() {
+      expect(typeof ufo.explode).toBe("function");
+    });
+  });
+
+  describe("allImagesLoaded", function() {
+    it ("should return true if all elements in this.frames have 'completed' set to true", function() {
+      var img1 = {
+        "complete": true,
+      };
+      var img2 = {
+        "complete": true,
+      };
+      var frames = [img1, img2];
+      ufo.frames = frames;
+      var result = ufo.allImagesLoaded();
+      expect(result).toBe(true);
+    });
+    it ("should return false if not all elements in this.frames have 'completed' set to true", function() {
+      var img1 = {
+        "complete": true,
+      };
+      var img2 = {
+        "complete": false,
+      };
+      var frames = [img1, img2];
+      ufo.frames = frames;
+      var result = ufo.allImagesLoaded();
+      expect(result).toBe(false);
+    });
+    it ("should set ufo.width and ufo.height if all images are complete, based on first frame", function() {
+      var img1 = {
+        "height": 300,
+        "width": 200,
+        "complete": true,
+      };
+      var img2 = {
+        "complete": true,
+      };
+      var frames = [img1, img2];
+      ufo.frames = frames;
+      var result = ufo.allImagesLoaded();
+      expect(result).toBe(true);
+      expect(ufo.width).toBe(img1.width);
+      expect(ufo.height).toBe(img1.height);
     });
   });
 });
