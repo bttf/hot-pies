@@ -35,6 +35,7 @@ function Ufo(canvasWidth, canvasHeight, targetCow) {
 }
 
 Ufo.prototype.render = function(time) {
+  this.updateFrame(time);
   if (this.exploding) {
     if (time > this.explodeTick) {
       if (!this.explosionPlayed) {
@@ -42,9 +43,9 @@ Ufo.prototype.render = function(time) {
         this.explosionPlayed = true;
       }
     }
+    this.moveExplodingUfo();
   }
   else {
-    this.updateFrame(time);
     this.setMovementBasedOnCow();
     this.moveUfo();
   }
@@ -81,6 +82,7 @@ Ufo.prototype.updateFrame = function(time) {
     this.frame = (this.frame + 1) % this.frames.length;
     this.lastTick = time;
   }
+  // need exploding logic in here
 };
 
 Ufo.prototype.moveUfo = function() {
@@ -149,4 +151,19 @@ Ufo.prototype.allImagesLoaded = function() {
     this.height = this.frames[0].height;
   };
   return allComplete;
+};
+
+Ufo.prototype.moveExplodingUfo = function() {
+  switch (this.movement) {
+    case "left":
+      this.x -= this.speed * 2;
+      this.y += 2;
+      break;
+    case "right":
+      this.x += this.speed * 2;
+      this.y += 2;
+      break;
+    case "still":
+      break;
+  }
 };

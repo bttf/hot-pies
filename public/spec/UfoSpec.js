@@ -269,4 +269,23 @@ describe("Ufo", function() {
       expect(ufo.height).toBe(img1.height);
     });
   });
+
+  describe("moveExplodingUfo", function() {
+    it ("should make some changes to x and y if movement is left", function() {
+      var x = ufo.x,
+          y = ufo.y;
+      ufo.movement = "left";
+      ufo.moveExplodingUfo();
+      expect(ufo.x).not.toBe(x);
+      expect(ufo.y).not.toBe(y);
+    });
+    it ("should make some changes to x and y if movement is right", function() {
+      var x = ufo.x,
+           y = ufo.y;
+      ufo.movement = "right";
+      ufo.moveExplodingUfo();
+      expect(ufo.x).not.toBe(x);
+      expect(ufo.y).not.toBe(y);
+    });
+  });
 });
