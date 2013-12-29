@@ -41,6 +41,9 @@ Game.prototype.draw = function(context) {
 };
 
 Game.prototype.key_down = function(e) {
+  if (e.keyCode == 85) {
+    this.ufos.push(new Ufo(this.canvasWidth, this.canvasHeight, this.cows[0]));
+  }
   this.shotgun.key_down(e);
 };
 

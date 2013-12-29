@@ -164,6 +164,7 @@ Ufo.prototype.moveExplodingUfo = function() {
       this.y += 2;
       break;
     case "still":
+      this.y += this.speed;
       break;
   }
 };
