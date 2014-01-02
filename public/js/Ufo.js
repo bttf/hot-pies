@@ -1,6 +1,10 @@
 function Ufo(canvasWidth, canvasHeight, targetCow) {
   var assets = ['img/ufo1.png',
-                'img/ufo2.png'];
+                'img/ufo2.png',
+                'img/ufo3.png',
+                'img/ufo4.png',
+                'img/ufo5.png',
+                'img/ufo6.png'];
 
   this.canvasWidth = canvasWidth;
   this.canvasHeight = canvasHeight;
@@ -12,10 +16,11 @@ function Ufo(canvasWidth, canvasHeight, targetCow) {
 
   this.explosionPlayed = false;
   this.explodeTick = 0;
-  this.explodeDelay = 750;
+  this.explodeDelay = 250;
   this.explosion = new Audio('audio/explosion.ogg');
   this.explosion.preload = "auto";
   this.exploding = false;
+  this.explodingFps = 1000/7;
 
   this.fps = 1000/6;
   this.movement = "still";
@@ -37,13 +42,7 @@ function Ufo(canvasWidth, canvasHeight, targetCow) {
 Ufo.prototype.render = function(time) {
   this.updateFrame(time);
   if (this.exploding) {
-    if (time > this.explodeTick) {
-      if (!this.explosionPlayed) {
-        this.explosion.play();
-        this.explosionPlayed = true;
-      }
-    }
-    this.moveExplodingUfo();
+    this.moveExplodingUfo(time);
   }
   else {
     this.setMovementBasedOnCow();
@@ -78,11 +77,20 @@ function drawRotatedImage(context, image, x, y, angle) {
 };
 
 Ufo.prototype.updateFrame = function(time) {
-  if (time > (this.lastTick + this.fps)) {
-    this.frame = (this.frame + 1) % this.frames.length;
-    this.lastTick = time;
+  if (!this.exploding) {
+    if (time > (this.lastTick + this.fps)) {
+      this.frame = (this.frame + 1) % 2;
+      this.lastTick = time;
+    }
   }
-  // need exploding logic in here
+  else {
+    if (time > (this.lastTick + this.explodingFps)) {
+      if (this.frame < 5) {
+        this.frame++;
+      }
+      this.lastTick = time;
+    }
+  }
 };
 
 Ufo.prototype.moveUfo = function() {
@@ -153,7 +161,13 @@ Ufo.prototype.allImagesLoaded = function() {
   return allComplete;
 };
 
-Ufo.prototype.moveExplodingUfo = function() {
+Ufo.prototype.moveExplodingUfo = function(time) {
+  if (time > this.explodeTick) {
+    if (!this.explosionPlayed) {
+      this.explosion.play();
+      this.explosionPlayed = true;
+    }
+  }
   switch (this.movement) {
     case "left":
       this.x -= this.speed * 2;

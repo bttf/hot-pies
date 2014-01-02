@@ -71,7 +71,6 @@ Game.prototype.ufoHit = function() {
   var index;
   var maxX = 0;
   for (var i = 0; i < this.ufos.length; i++) {
-    console.log(this.ufos[i]);
     if (this.lineSight.doesIntersect(this.ufos[i])) {
       if (this.ufos[i].x > maxX) {
         maxX = this.ufos[i].x;
