@@ -14,22 +14,23 @@ Game.prototype.init = function(canvasWidth, canvasHeight) {
   this.shotgun = new ShotGun();
   this.farmerJohn = new FarmerJohn(canvasWidth, canvasHeight);
   this.lineSight = new LineSight(canvasWidth, canvasHeight, this.farmerJohn);
+  this.background = new Background(canvasWidth, canvasHeight);
 };
 
 Game.prototype.render = function(time) {
+  this.background.render(time);
   this.cows.forEach(function(cow, index, cows) {
     cow.render(time);
   });
-
-  for (var i = 0; i < this.ufos.length; i++) {
-    this.ufos[i].render(time);
-  }
-
+  this.ufos.forEach(function(ufo, index, ufos) {
+    ufo.render(time);
+  });
   this.farmerJohn.render(time);
   this.lineSight.render(time);
 };
 
 Game.prototype.draw = function(context) {
+  this.background.draw(context);
   this.lineSight.draw(context);
   this.farmerJohn.draw(context);
   this.cows.forEach(function(cow, index, cows) {
