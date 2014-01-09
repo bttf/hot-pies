@@ -1,8 +1,18 @@
 describe("Game", function() {
   var game;
+
   beforeEach(function() {
     game = new Game();
     game.init(800, 800);
+  });
+
+  describe("constructor", function() {
+    it ("should define a lastTick", function() {
+      expect(game.lastTick).toBeDefined();
+    });
+    it ("should define a cowDelay", function() {
+      expect(game.cowDelay).toBeDefined();
+    });
   });
 
   describe("'init' function", function() {
