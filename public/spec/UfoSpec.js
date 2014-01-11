@@ -5,7 +5,7 @@ describe("Ufo", function() {
     ufo = new Ufo(0, 0, cow);
   });
 
-  describe("loading image assets", function() {
+  describe("constructor", function() {
     it ("should have a 'frames' array", function() {
       expect(Object.prototype.toString.call(ufo.frames)).toBe("[object Array]");
     });
@@ -19,6 +19,12 @@ describe("Ufo", function() {
       for (var i = 0; i < ufo.frames.length; i++) {
         expect(Object.prototype.toString.call(ufo.frames[i])).toBe("[object HTMLImageElement]");
       }
+    });
+    it ("needs to have a beamDelay", function() {
+      expect(ufo.beamDelay).toBeDefined();
+    });
+    it ("needs a beamTick", function() {
+      expect(ufo.beamTick).toBeDefined();
     });
   });
 
@@ -96,19 +102,26 @@ describe("Ufo", function() {
   });
 
   describe("setMovementBasedOnCow", function() {
+    var cow;
+    var ufo;
+    var time;
     beforeEach(function() {
-      var cow = new Cow(0,0);
-      var ufo = new Ufo(cow, 0, 0);
+      cow = new Cow(0,0);
+      ufo = new Ufo(cow, 0, 0);
+      time = 12345;
     });
     it ("should exist", function() {
       expect(typeof ufo.setMovementBasedOnCow).toBe("function");
+    });
+    it ("should accept one parameter for time", function() {
+      expect(ufo.setMovementBasedOnCow.length).toEqual(1);
     });
     it ("should not change movement if cow is not still", function() {
       ufo.movement = "something";
       ufo.targetCow = {
         movement: "notStill",
       };
-      ufo.setMovementBasedOnCow();
+      ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("something");
     });
     it ("should move left if targetCow.x+5 is less than ufo.x", function() {
@@ -117,7 +130,7 @@ describe("Ufo", function() {
         movement: "still",
       };
       ufo.x = 15;
-      ufo.setMovementBasedOnCow();
+      ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("left");
     });
     it ("should move right if ufo.x is less than targetCow.x-5", function() {
@@ -126,7 +139,7 @@ describe("Ufo", function() {
         movement: "still",
       };
       ufo.x = 5;
-      ufo.setMovementBasedOnCow();
+      ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("right");
     });
     it ("should keep still if x is within 5 of targetCow.x", function() {
@@ -135,15 +148,49 @@ describe("Ufo", function() {
         movement: "still",
       };
       ufo.x = 10;
-      ufo.setMovementBasedOnCow();
+      ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("still");
       ufo.targetCow = { 
         x: 15,
         movement: "still",
       };
       ufo.x = 20;
-      ufo.setMovementBasedOnCow();
+      ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("still");
+    });
+    it ("should set beamTick to time when it moves left", function() {
+      ufo.targetCow = { 
+        x: 5,
+        movement: "still",
+      };
+      ufo.x = 15;
+      expect(ufo.beamTick).not.toEqual(time);
+      ufo.setMovementBasedOnCow(time);
+      expect(ufo.movement).toBe("left");
+      expect(ufo.beamTick).toEqual(time);
+    });
+    it ("should set beamTick to time when it moves right", function() {
+      ufo.targetCow = { 
+        x: 15,
+        movement: "still",
+      };
+      ufo.x = 5;
+      expect(ufo.beamTick).not.toEqual(time);
+      ufo.setMovementBasedOnCow(time);
+      expect(ufo.movement).toBe("right");
+      expect(ufo.beamTick).toEqual(time);
+    });
+    it ("should set movement to beaming if time is greater than beamTick + beamDelay and beamTick not equal to 0", function() {
+      ufo.targetCow = {
+        x: 5,
+        movement: "still",
+      };
+      ufo.x = 5;
+      ufo.beamTick = 5;
+      ufo.beamDelay = 5;
+      expect(ufo.movement).toBe("still");
+      ufo.setMovementBasedOnCow(time);
+      expect(ufo.movement).toBe("beaming");
     });
   });
 
@@ -154,6 +201,9 @@ describe("Ufo", function() {
     });
     it ("should exist", function() {
       expect(typeof ufo.moveUfo).toBe("function");
+    });
+    it ("needs to accept one parameter, time", function() {
+      expect(ufo.moveUfo.length).toEqual(1);
     });
     it ("tilt should be not-equal to zero when movement is either left or right", function() {
       ufo.movement = "left";
@@ -225,6 +275,15 @@ describe("Ufo", function() {
     it ("should exist as a function", function() {
       expect(typeof ufo.explode).toBe("function");
     });
+    it ("should call ufoBeam.reset()", function() {
+      var ufoBeam = {
+        reset: function() {},
+      };
+      spyOn(ufoBeam, "reset");
+      ufo.ufoBeam = ufoBeam;
+      ufo.explode();
+      expect(ufoBeam.reset).toHaveBeenCalled();
+    });
   });
 
   describe("allImagesLoaded", function() {
@@ -286,6 +345,22 @@ describe("Ufo", function() {
       ufo.moveExplodingUfo();
       expect(ufo.x).not.toBe(x);
       expect(ufo.y).not.toBe(y);
+    });
+    it ("should change y for still movement", function() {
+      var x = ufo.x;
+      var y = ufo.y;
+      ufo.movement = "still";
+      ufo.moveExplodingUfo();
+      expect(ufo.x).toEqual(x);
+      expect(ufo.y).not.toEqual(y);
+    });
+    it ("should change y for beaming movement", function() {
+      var x = ufo.x;
+      var y = ufo.y;
+      ufo.movement = "beaming";
+      ufo.moveExplodingUfo();
+      expect(ufo.x).toEqual(x);
+      expect(ufo.y).not.toEqual(y);
     });
   });
 });

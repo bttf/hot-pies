@@ -10,6 +10,8 @@ function Ufo(canvasWidth, canvasHeight, targetCow) {
   this.canvasHeight = canvasHeight;
 
   this.ufoBeam = new UfoBeam();
+  this.beamDelay = 500;
+  this.beamTick = 0;
 
   this.x = this.initX(canvasWidth);
   this.y = this.initY(canvasHeight);
@@ -45,8 +47,8 @@ Ufo.prototype.render = function(time) {
     this.moveExplodingUfo(time);
   }
   else {
-    this.setMovementBasedOnCow();
-    this.moveUfo();
+    this.setMovementBasedOnCow(time);
+    this.moveUfo(time);
   }
 };
 
@@ -93,7 +95,7 @@ Ufo.prototype.updateFrame = function(time) {
   }
 };
 
-Ufo.prototype.moveUfo = function() {
+Ufo.prototype.moveUfo = function(time) {
   switch(this.movement) {
     case "left":
       this.tilt = -20;
@@ -113,17 +115,24 @@ Ufo.prototype.moveUfo = function() {
   }
 }
 
-Ufo.prototype.setMovementBasedOnCow = function() {
+Ufo.prototype.setMovementBasedOnCow = function(time) {
   if (this.targetCow.movement === "still") {
     var cow = this.targetCow;
     if (this.x > cow.x + 5) {
       this.movement = "left";
+      this.beamTick = time;
     }
     else if (this.x < cow.x - 5) {
       this.movement = "right";
+      this.beamTick = time;
     }
     else {
-      this.movement = "still";
+      if (this.beamTick !== 0 && time > this.beamTick + this.beamDelay) {
+        this.movement = "beaming";
+      }
+      else {
+        this.movement = "still";
+      }
     }
   }
 };
@@ -145,6 +154,7 @@ Ufo.prototype.initY = function(canvasHeight) {
 Ufo.prototype.explode = function() {
   this.explodeTick = this.lastTick + this.explodeDelay;
   this.exploding = true;
+  this.ufoBeam.reset();
 };
 
 Ufo.prototype.allImagesLoaded = function() {
@@ -177,6 +187,7 @@ Ufo.prototype.moveExplodingUfo = function(time) {
       this.x += this.speed * 2;
       this.y += 2;
       break;
+    case "beaming":
     case "still":
       this.y += this.speed;
       break;

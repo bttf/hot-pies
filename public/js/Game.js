@@ -12,8 +12,6 @@ function Game() {
 Game.prototype.init = function(canvasWidth, canvasHeight) {
   this.canvasWidth = canvasWidth;
   this.canvasHeight = canvasHeight;
-  //this.cows.push(new Cow(canvasWidth, canvasHeight));
-  //this.ufos.push(new Ufo(canvasWidth, canvasHeight, this.cows[0]));
   this.shotgun = new ShotGun();
   this.farmerJohn = new FarmerJohn(canvasWidth, canvasHeight);
   this.lineSight = new LineSight(canvasWidth, canvasHeight, this.farmerJohn);
