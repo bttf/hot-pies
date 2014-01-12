@@ -26,6 +26,15 @@ describe("Ufo", function() {
     it ("needs a beamTick", function() {
       expect(ufo.beamTick).toBeDefined();
     });
+    it ("should have an explosionSfx array", function() {
+      expect(Object.prototype.toString.call(ufo.explosionSfx)).toBe("[object Array]");
+    });
+    it ("explosionSfx should be loaded with Audio objs", function() {
+      expect(ufo.explosionSfx.length).toBeGreaterThan(0);
+      for (var i = 0; i < ufo.explosionSfx.length; i++) {
+        expect(Object.prototype.toString.call(ufo.explosionSfx[i])).toBe("[object HTMLAudioElement]");
+      }
+    });
   });
 
   describe ("rendering", function() {
@@ -55,10 +64,10 @@ describe("Ufo", function() {
     it ("should use context to drawImage", function() {
       var x = {
         drawImage: function() {},
-        save: function() {},
-        translate: function() {},
-        rotate: function() {},
-        restore: function() {},
+       save: function() {},
+       translate: function() {},
+       rotate: function() {},
+       restore: function() {},
       };
       spyOn(x, 'drawImage');
       ufo.draw(x);
@@ -127,7 +136,7 @@ describe("Ufo", function() {
     it ("should move left if targetCow.x+5 is less than ufo.x", function() {
       ufo.targetCow = { 
         x: 5,
-        movement: "still",
+       movement: "still",
       };
       ufo.x = 15;
       ufo.setMovementBasedOnCow(time);
@@ -136,7 +145,7 @@ describe("Ufo", function() {
     it ("should move right if ufo.x is less than targetCow.x-5", function() {
       ufo.targetCow = { 
         x: 15,
-        movement: "still",
+       movement: "still",
       };
       ufo.x = 5;
       ufo.setMovementBasedOnCow(time);
@@ -145,14 +154,14 @@ describe("Ufo", function() {
     it ("should keep still if x is within 5 of targetCow.x", function() {
       ufo.targetCow = { 
         x: 15,
-        movement: "still",
+       movement: "still",
       };
       ufo.x = 10;
       ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("still");
       ufo.targetCow = { 
         x: 15,
-        movement: "still",
+       movement: "still",
       };
       ufo.x = 20;
       ufo.setMovementBasedOnCow(time);
@@ -161,7 +170,7 @@ describe("Ufo", function() {
     it ("should set beamTick to time when it moves left", function() {
       ufo.targetCow = { 
         x: 5,
-        movement: "still",
+       movement: "still",
       };
       ufo.x = 15;
       expect(ufo.beamTick).not.toEqual(time);
@@ -172,7 +181,7 @@ describe("Ufo", function() {
     it ("should set beamTick to time when it moves right", function() {
       ufo.targetCow = { 
         x: 15,
-        movement: "still",
+       movement: "still",
       };
       ufo.x = 5;
       expect(ufo.beamTick).not.toEqual(time);
@@ -183,7 +192,7 @@ describe("Ufo", function() {
     it ("should set movement to beaming if time is greater than beamTick + beamDelay and beamTick not equal to 0", function() {
       ufo.targetCow = {
         x: 5,
-        movement: "still",
+       movement: "still",
       };
       ufo.x = 5;
       ufo.beamTick = 5;
@@ -253,7 +262,7 @@ describe("Ufo", function() {
       else {
         result = false;
       }
-      expect(result).toBe(true);
+    expect(result).toBe(true);
     });
   });
 
@@ -267,7 +276,7 @@ describe("Ufo", function() {
       else {
         result = false;
       }
-      expect(result).toBe(true);
+    expect(result).toBe(true);
     });
   });
 
@@ -314,8 +323,8 @@ describe("Ufo", function() {
     it ("should set ufo.width and ufo.height if all images are complete, based on first frame", function() {
       var img1 = {
         "height": 300,
-        "width": 200,
-        "complete": true,
+       "width": 200,
+       "complete": true,
       };
       var img2 = {
         "complete": true,
@@ -332,19 +341,19 @@ describe("Ufo", function() {
   describe("moveExplodingUfo", function() {
     it ("should make some changes to x and y if movement is left", function() {
       var x = ufo.x,
-          y = ufo.y;
-      ufo.movement = "left";
-      ufo.moveExplodingUfo();
-      expect(ufo.x).not.toBe(x);
-      expect(ufo.y).not.toBe(y);
+       y = ufo.y;
+    ufo.movement = "left";
+    ufo.moveExplodingUfo();
+    expect(ufo.x).not.toBe(x);
+    expect(ufo.y).not.toBe(y);
     });
     it ("should make some changes to x and y if movement is right", function() {
       var x = ufo.x,
-           y = ufo.y;
-      ufo.movement = "right";
-      ufo.moveExplodingUfo();
-      expect(ufo.x).not.toBe(x);
-      expect(ufo.y).not.toBe(y);
+       y = ufo.y;
+    ufo.movement = "right";
+    ufo.moveExplodingUfo();
+    expect(ufo.x).not.toBe(x);
+    expect(ufo.y).not.toBe(y);
     });
     it ("should change y for still movement", function() {
       var x = ufo.x;
@@ -364,3 +373,4 @@ describe("Ufo", function() {
     });
   });
 });
+

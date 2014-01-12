@@ -5,6 +5,11 @@ function Ufo(canvasWidth, canvasHeight, targetCow) {
                 'img/ufo4.png',
                 'img/ufo5.png',
                 'img/ufo6.png'];
+  var explosionAssets = ['audio/explosion1.ogg',
+                         'audio/explosion2.ogg',
+                         'audio/explosion3.ogg',
+                         'audio/explosion4.ogg',
+                         'audio/explosion5.ogg'];
 
   this.canvasWidth = canvasWidth;
   this.canvasHeight = canvasHeight;
@@ -16,11 +21,14 @@ function Ufo(canvasWidth, canvasHeight, targetCow) {
   this.x = this.initX(canvasWidth);
   this.y = this.initY(canvasHeight);
 
+  this.explosionSfx = [];
+  for (var i = 0; i < explosionAssets.length; i++) {
+    this.explosionSfx.push(new Audio(explosionAssets[i]));
+    this.explosionSfx[i].preload = "auto";
+  }
   this.explosionPlayed = false;
   this.explodeTick = 0;
   this.explodeDelay = 250;
-  this.explosion = new Audio('audio/explosion.ogg');
-  this.explosion.preload = "auto";
   this.exploding = false;
   this.explodingFps = 1000/7;
 
@@ -174,7 +182,8 @@ Ufo.prototype.allImagesLoaded = function() {
 Ufo.prototype.moveExplodingUfo = function(time) {
   if (time > this.explodeTick) {
     if (!this.explosionPlayed) {
-      this.explosion.play();
+      var index = Math.floor(Math.random() * this.explosionSfx.length);
+      this.explosionSfx[index].play();
       this.explosionPlayed = true;
     }
   }
@@ -193,3 +202,4 @@ Ufo.prototype.moveExplodingUfo = function(time) {
       break;
   }
 };
+
