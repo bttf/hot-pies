@@ -13,11 +13,23 @@ describe("Game", function() {
     it ("should define a cowDelay", function() {
       expect(game.cowDelay).toBeDefined();
     });
+    it ("should have a music Audio object", function() {
+      expect(Object.prototype.toString.call(game.music)).toBe("[object HTMLAudioElement]");
+    });
   });
 
   describe("'init' function", function() {
     it ("should have an 'init' function", function() {
       expect(typeof game.init).toBe('function');
+    });
+    it ("should play music", function() {
+      var mockMusic = {
+        play: function() {},
+      };
+      spyOn(mockMusic, "play");
+      game.music = mockMusic;
+      game.init();
+      expect(mockMusic.play).toHaveBeenCalled();
     });
   });
 
