@@ -89,7 +89,6 @@ Game.prototype.ufoHit = function() {
       if (this.ufos[i].x > maxX) {
         maxX = this.ufos[i].x;
         index = i;
-        console.log('maxX %d', maxX);
       }
     }
   }

@@ -86,7 +86,7 @@ describe("Game", function() {
       };
       game.ufos = [ufo1, ufo2];
       var result = game.ufoHit();
-      expect(result.name).toBe("ufo2");
+      expect(result).toBe(ufo2);
     });
     it ("should return false if no ufos instersect", function() {
       var ufo1 = {
@@ -106,6 +106,36 @@ describe("Game", function() {
       game.ufos = [ufo1, ufo2];
       var result = game.ufoHit();
       expect(result).toBe(false);
+    });
+  });
+
+  describe("mouse_down", function() {
+    it ("should execute ufoHit if shotgun isCocked", function () {
+      game.shotgun.isCocked = true;
+      var mockUfoHit = {
+        ufoHit: function() {},
+      };
+      var e = {};
+      spyOn(mockUfoHit, "ufoHit");
+      game.ufoHit = mockUfoHit.ufoHit;
+      game.mouse_down(e);
+      expect(mockUfoHit.ufoHit).toHaveBeenCalled();
+    });
+    it ("should execute 'explode' function for ufo returned by ufoHit", function() {
+      game.shotgun.isCocked = true;
+      var ufo1 = {};
+      var ufo2 = {
+        explode: function() {},
+      };      
+      game.ufos = [ufo1, ufo2];
+      var mockUfoHit = function() {
+        return ufo2;
+      };
+      var e = {};
+      spyOn(ufo2, "explode");
+      game.ufoHit = mockUfoHit;
+      game.mouse_down(e);
+      expect(ufo2.explode).toHaveBeenCalled();
     });
   });
 });
