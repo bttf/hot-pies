@@ -1,4 +1,15 @@
 describe("UfoBeam", function() {
+  describe("contructor", function() {
+    it ("should accept a param for targetY", function() {
+      expect(UfoBeam.length).toEqual(1);
+    });
+    it ("should set beam_target_y to param value", function() {
+      var x = 15;
+      var ufoBeam = new UfoBeam(x);
+      expect(ufoBeam.beam_target_y).toEqual(x);
+    });
+  });
+
   describe("rendering and drawing", function() {
     var ufoBeam = new UfoBeam();
     describe("render function", function() {

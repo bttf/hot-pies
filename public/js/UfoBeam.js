@@ -1,4 +1,4 @@
-function UfoBeam() {
+function UfoBeam(targetY) {
   var beam_png = 'img/ufo_beam.png';
   this.is_beaming = false;
   this.beam_fps = 1000/2;
@@ -6,7 +6,7 @@ function UfoBeam() {
   this.beam_count = 0;
   this.beam = new Image();
   this.beam.src = beam_png;
-  this.beam_target_y = 1000;
+  this.beam_target_y = targetY;
   this.beam_x = 0;
   this.beam_y = 0;
 

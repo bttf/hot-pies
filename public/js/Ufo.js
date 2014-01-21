@@ -14,7 +14,7 @@ function Ufo(canvasWidth, canvasHeight, targetCow) {
   this.canvasWidth = canvasWidth;
   this.canvasHeight = canvasHeight;
 
-  this.ufoBeam = new UfoBeam();
+  this.ufoBeam = new UfoBeam(targetCow.target_y);
   this.beamDelay = 500;
   this.beamTick = 0;
 
