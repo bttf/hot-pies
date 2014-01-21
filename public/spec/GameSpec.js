@@ -16,20 +16,37 @@ describe("Game", function() {
     it ("should have a music Audio object", function() {
       expect(Object.prototype.toString.call(game.music)).toBe("[object HTMLAudioElement]");
     });
+    it ("should have a playMusic boolean", function() {
+      expect(typeof game.playMusic).toBe("boolean");
+    });
+    it ("playMusic should be set to false as default", function() {
+      expect(game.playMusic).toEqual(false);
+    });
   });
 
   describe("'init' function", function() {
     it ("should have an 'init' function", function() {
       expect(typeof game.init).toBe('function');
     });
-    it ("should play music", function() {
+    it ("should play music if playMusic is true", function() {
       var mockMusic = {
         play: function() {},
       };
+      game.playMusic = true;
       spyOn(mockMusic, "play");
       game.music = mockMusic;
       game.init();
       expect(mockMusic.play).toHaveBeenCalled();
+    });
+    it ("should not play music if playMusic is false", function() {
+      var mockMusic = {
+        play: function() {},
+      };
+      game.playMusic = false;
+      spyOn(mockMusic, "play");
+      game.music = mockMusic;
+      game.init();
+      expect(mockMusic.play).not.toHaveBeenCalled();
     });
   });
 

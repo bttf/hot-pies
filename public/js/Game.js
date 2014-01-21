@@ -8,12 +8,14 @@ function Game() {
   this.lastTick = 0;
   this.cowDelay = 2000;
 
+  this.playMusic = false;
   this.music = new Audio('audio/giltrythall.ogg');
   this.music.preload = "auto";
 }
 
 Game.prototype.init = function(canvasWidth, canvasHeight) {
-  this.music.play();
+  if (this.playMusic)
+    this.music.play();
 
   this.canvasWidth = canvasWidth;
   this.canvasHeight = canvasHeight;

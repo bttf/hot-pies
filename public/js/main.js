@@ -55,6 +55,7 @@ var init_browser = function() {
   horizon = (canvas.height / 2);
   center_axis = (canvas.width / 2);
   game = new Game(canvas.width, canvas.height);
+  game.playMusic = true;
 };
 
 var init = function() {
