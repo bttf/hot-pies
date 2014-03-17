@@ -69,6 +69,9 @@ describe("Ufo", function() {
        rotate: function() {},
        restore: function() {},
       };
+      ufo.allImagesLoaded = function() {
+        return true;
+      };
       spyOn(x, 'drawImage');
       ufo.draw(x);
       expect(x.drawImage).toHaveBeenCalled();
