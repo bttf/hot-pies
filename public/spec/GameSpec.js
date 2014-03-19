@@ -13,6 +13,9 @@ describe("Game", function() {
     it ("should define a cowDelay", function() {
       expect(game.cowDelay).toBeDefined();
     });
+    it ("should have a ufoAi object instantiated", function() {
+      expect(game.ufoAi).toBeDefined();
+    });
     it ("should have a music Audio object", function() {
       expect(Object.prototype.toString.call(game.music)).toBe("[object HTMLAudioElement]");
     });
@@ -25,6 +28,8 @@ describe("Game", function() {
   });
 
   describe("'init' function", function() {
+    var canvasWidth = 500,
+      canvasHeight = 500;
     it ("should have an 'init' function", function() {
       expect(typeof game.init).toBe('function');
     });
@@ -48,6 +53,15 @@ describe("Game", function() {
       game.init();
       expect(mockMusic.play).not.toHaveBeenCalled();
     });
+    it ('should init UfoAi', function() {
+      var ufoAi = {
+        'init': function() {},
+      };
+      spyOn(ufoAi, 'init');
+      game.ufoAi = ufoAi;
+      game.init(canvasWidth, canvasHeight);
+      expect(ufoAi.init).toHaveBeenCalled();
+    });
   });
 
   describe ("'render' function", function() {
@@ -57,6 +71,17 @@ describe("Game", function() {
 
     it ("should accept one (1) parameter for time", function() {
       expect(game.render.length).toEqual(1);
+    });
+    it ("should make a call to ufoAi.generateUfos", function() {
+      var ufoAi = {
+        'generateUfos': function() {},
+      };
+      spyOn(ufoAi, 'generateUfos');
+      game.ufoAi = ufoAi;
+
+      var time = 0;
+      game.render(time)
+      expect(ufoAi.generateUfos).toHaveBeenCalledWith(game.ufos, game.cows, time);
     });
   });
 
