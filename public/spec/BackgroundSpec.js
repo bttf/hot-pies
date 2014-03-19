@@ -63,6 +63,14 @@ describe("Background", function() {
       var context = {
         "drawImage": function() {},
       };
+
+      if (!bg.allImagesLoaded()) {
+        bg.background.height = 500;
+        bg.background.width = 500;
+        bg.allImagesLoaded = function() {
+          return true;
+        };
+      }
       spyOn(context, "drawImage");
       bg.drawBg(context);
       expect(context.drawImage).toHaveBeenCalled();
@@ -81,6 +89,12 @@ describe("Background", function() {
         "drawImage": function() {},
       };
       spyOn(context, "drawImage");
+      if (!bg.allImagesLoaded()) {
+        bg.foreground.width = 500;
+        bg.allImagesLoaded = function() {
+          return true;
+        };
+      }
       bg.drawFg(context);
       expect(context.drawImage).toHaveBeenCalled();
     });

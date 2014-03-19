@@ -56,6 +56,11 @@ Game.prototype.draw = function(context) {
   this.ufos.forEach(function(ufo, index, ufos) {
     ufo.draw(context);
   });
+
+  // debug
+  context.fillStyle = "red";
+  context.font = "bold 16px Georgia";
+  context.fillText("ufoDelay: " + this.ufoAi.ufoDelay, 100, 100);
 };
 
 Game.prototype.key_down = function(e) {
