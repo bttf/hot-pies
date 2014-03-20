@@ -19,6 +19,9 @@ describe('UfoAi', function() {
     it ('should keep a ufoDelayDecay property', function() {
       expect(ufoAi.ufoDelayDecay).toBeDefined();
     });
+    it ('should keep a ufoDelcayDecayCutoff property', function() {
+      expect(ufoAi.ufoDelayDecayCutoff).toBeDefined();
+    });
   });
 
   describe('init', function() {
@@ -71,11 +74,19 @@ describe('UfoAi', function() {
       ufoAi.generateUfos(ufos, cows, time);
       expect(ufoAi.lastTick).toEqual(time);
     });
-    it ('should decrement ufoDelay by ufoDelayDecay if time is greater than lastTick + ufoDelay', function() {
+    it ('should decrement ufoDelay by ufoDelayDecay if time is greater than lastTick + ufoDelay and ufoDelayDecay is greater than ufoDelayDecayCutoff', function() {
       var time = 11;
       ufoAi.ufoDelay = 10;
       ufoAi.lastTick = 0;
       ufoAi.ufoDelayDecay = 5;
+      ufoAi.generateUfos(ufos, cows, time);
+      expect(ufoAi.ufoDelay).toEqual(10);
+
+      var time = 11;
+      ufoAi.ufoDelay = 10;
+      ufoAi.lastTick = 0;
+      ufoAi.ufoDelayDecay = 5;
+      ufoAi.ufoDelayDecayCutoff = 0;
       ufoAi.generateUfos(ufos, cows, time);
       expect(ufoAi.ufoDelay).toEqual(5);
 
@@ -83,6 +94,7 @@ describe('UfoAi', function() {
       ufoAi.ufoDelay = 10;
       ufoAi.lastTick = 0;
       ufoAi.ufoDelayDecay = 5;
+      ufoAi.ufoDelayDecayCutoff = 0;
       ufoAi.generateUfos(ufos, cows, time);
       expect(ufoAi.ufoDelay).toEqual(10);
     });
