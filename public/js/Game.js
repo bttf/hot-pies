@@ -34,7 +34,8 @@ Game.prototype.render = function(time) {
     lastCow = this.cows.length - 1;
     this.lastTick = time;
   }
-  this.ufoAi.generateUfos(this.ufos, this.cows, time);
+  if (this.cows.length > 0) 
+    this.ufoAi.generateUfos(this.ufos, this.cows, time);
   this.background.render(time);
   this.cows.forEach(function(cow, index, cows) {
     cow.render(time);

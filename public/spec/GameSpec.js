@@ -72,12 +72,19 @@ describe("Game", function() {
     it ("should accept one (1) parameter for time", function() {
       expect(game.render.length).toEqual(1);
     });
-    it ("should make a call to ufoAi.generateUfos", function() {
+    it ("should make a call to ufoAi.generateUfos if cows is > 0", function() {
       var ufoAi = {
         'generateUfos': function() {},
       };
       spyOn(ufoAi, 'generateUfos');
       game.ufoAi = ufoAi;
+      game.cows = [];
+
+      var time = 0;
+      game.render(time)
+      expect(ufoAi.generateUfos).not.toHaveBeenCalledWith(game.ufos, game.cows, time);
+
+      game.cows = [ { 'render': function() {} } ];
 
       var time = 0;
       game.render(time)
