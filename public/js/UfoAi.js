@@ -16,7 +16,8 @@ UfoAi.prototype.generateUfos = function(ufos, cows, time) {
   if (time > this.lastTick + this.ufoDelay) {
     ufos.push(new Ufo(this.canvasWidth, this.canvasHeight, cows[this.randCowIndex]));
     this.lastTick = time;
-    this.ufoDelay -= this.ufoDelayDecay;
+    if (this.ufoDelay > 850)
+      this.ufoDelay -= this.ufoDelayDecay;
   }
   for (var i = 0; i < ufos.length; i++) {
     if (!ufos[i].targetCow) {

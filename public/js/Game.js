@@ -50,10 +50,10 @@ Game.prototype.render = function(time) {
 Game.prototype.draw = function(context) {
   this.background.draw(context);
   this.lineSight.draw(context);
-  this.farmerJohn.draw(context);
   this.cows.forEach(function(cow, index, cows) {
     cow.draw(context);
   });
+  this.farmerJohn.draw(context);
   this.ufos.forEach(function(ufo, index, ufos) {
     ufo.draw(context);
   });
