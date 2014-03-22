@@ -3,6 +3,7 @@ describe("Game", function() {
 
   beforeEach(function() {
     game = new Game();
+    game.muteAudio = true;
     game.init(800, 800);
   });
 
@@ -19,12 +20,6 @@ describe("Game", function() {
     it ("should have a music Audio object", function() {
       expect(Object.prototype.toString.call(game.music)).toBe("[object HTMLAudioElement]");
     });
-    it ("should have a playMusic boolean", function() {
-      expect(typeof game.playMusic).toBe("boolean");
-    });
-    it ("playMusic should be set to false as default", function() {
-      expect(game.playMusic).toEqual(false);
-    });
   });
 
   describe("'init' function", function() {
@@ -33,21 +28,26 @@ describe("Game", function() {
     it ("should have an 'init' function", function() {
       expect(typeof game.init).toBe('function');
     });
-    it ("should play music if playMusic is true", function() {
+    it ("should play music if muteAudio is false/undefined", function() {
       var mockMusic = {
         play: function() {},
       };
-      game.playMusic = true;
+      game.muteAudio = undefined;
       spyOn(mockMusic, "play");
       game.music = mockMusic;
       game.init();
       expect(mockMusic.play).toHaveBeenCalled();
+
+      game.muteAudio = false;
+      game.music = mockMusic;
+      game.init();
+      expect(mockMusic.play).toHaveBeenCalled();
     });
-    it ("should not play music if playMusic is false", function() {
+    it ("should not play music if muteAudio is true", function() {
       var mockMusic = {
         play: function() {},
       };
-      game.playMusic = false;
+      game.muteAudio = true;
       spyOn(mockMusic, "play");
       game.music = mockMusic;
       game.init();
@@ -159,6 +159,10 @@ describe("Game", function() {
   });
 
   describe("mouse_down", function() {
+    beforeEach(function() {
+      game.shotgun.muteAudio = true;
+    });
+
     it ("should execute ufoHit if shotgun isCocked", function () {
       game.shotgun.isCocked = true;
       var mockUfoHit = {

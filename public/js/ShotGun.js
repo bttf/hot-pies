@@ -16,7 +16,8 @@ ShotGun.prototype.key_down = function(e) {
           this.cock.pause();
           this.cock.currentTime = 0;
         }
-        this.cock.play();
+        if (!this.muteAudio)
+          this.cock.play();
         this.isCocked = true;
       }
       break;
@@ -29,7 +30,8 @@ ShotGun.prototype.mouse_down = function(e) {
       this.blast.pause();
       this.blast.currentTime = 0;
     }
-    this.blast.play();
+    if (!this.muteAudio)
+      this.blast.play();
     this.isCocked = false;
   }
 };

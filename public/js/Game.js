@@ -9,13 +9,12 @@ function Game() {
   this.lastTick = 0;
   this.cowDelay = 2000;
 
-  this.playMusic = false;
   this.music = new Audio('audio/giltrythall.ogg');
   this.music.preload = "auto";
 }
 
 Game.prototype.init = function(canvasWidth, canvasHeight) {
-  if (this.playMusic)
+  if (!this.muteAudio)
     this.music.play();
 
   this.canvasWidth = canvasWidth;
