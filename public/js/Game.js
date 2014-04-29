@@ -11,6 +11,8 @@ function Game() {
 
   this.music = new Audio('audio/giltrythall.ogg');
   this.music.preload = "auto";
+
+  this.muteAudio = 'true';
 }
 
 Game.prototype.init = function(canvasWidth, canvasHeight) {

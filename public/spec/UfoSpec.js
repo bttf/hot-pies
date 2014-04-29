@@ -204,6 +204,19 @@ describe("Ufo", function() {
       ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("beaming");
     });
+    it ("should set targetCow's movement to beaming once Ufo is at beaming state", function() {
+      ufo.targetCow = {
+        x: 5,
+       movement: "still",
+      };
+      ufo.x = 5;
+      ufo.beamTick = 5;
+      ufo.beamDelay = 5;
+      expect(ufo.movement).toBe("still");
+      ufo.setMovementBasedOnCow(time);
+      expect(ufo.movement).toBe("beaming");
+      expect(ufo.targetCow.movement).toBe("beaming");
+    });
   });
 
   describe("moveUfo", function() {

@@ -115,6 +115,13 @@ describe("Cow.js", function() {
       cow.moveCow((new Date).getTime());
       expect(cow.y).toEqual(cow_y - cow_speed);
     });
+    it ("should decrease y if movement is equal to 'beaming'", function() {
+      var cow_y = cow.y;
+      cow.movement = "beaming";
+      cow.moveCow((new Date).getTime());
+      var isCowYDecreased = cow_y > cow.y;
+      expect(isCowYDecreased).toBe(true);
+    });
     it ("lastTick should equal time parameter after moveCow with left or right", function() {
       var x = 12345;
       cow.movement = "left";
@@ -186,6 +193,11 @@ describe("Cow.js", function() {
       cow.movement = "something_else";
       cow.setDirection();
       expect(cow.movement).toBe("still");
+    });
+    it ("should maintain 'beaming' if it is already set", function() {
+      cow.movement = "beaming";
+      cow.setDirection();
+      expect(cow.movement).toBe("beaming");
     });
   });
 
@@ -273,20 +285,20 @@ describe("Cow.js", function() {
         expect(cow.frame).toEqual(2);
       }
 
-    cow.movement = "left";
-    cow.updateFrame();
-    cow.movement = "up";
-    cow.updateFrame();
-    result = (cow.frame == 0 || cow.frame == 1);
-    expect(result).toBe(true);
-    if (cow.frame == 0) {
+      cow.movement = "left";
       cow.updateFrame();
-      expect(cow.frame).toEqual(1);
-    }
-    else {
+      cow.movement = "up";
       cow.updateFrame();
-      expect(cow.frame).toEqual(0);
-    }
+      result = (cow.frame == 0 || cow.frame == 1);
+      expect(result).toBe(true);
+      if (cow.frame == 0) {
+        cow.updateFrame();
+        expect(cow.frame).toEqual(1);
+      }
+      else {
+        cow.updateFrame();
+        expect(cow.frame).toEqual(0);
+      }
     });
   });
 });

@@ -71,6 +71,7 @@ Ufo.prototype.draw = function(context) {
 
     if (this.movement === "beaming") {
       this.ufoBeam.draw(context, this);
+      this.targetCow.movement = "beaming";
     }
   }
 };
@@ -137,6 +138,7 @@ Ufo.prototype.setMovementBasedOnCow = function(time) {
     else {
       if (this.beamTick !== 0 && time > this.beamTick + this.beamDelay) {
         this.movement = "beaming";
+        this.targetCow.movement = "beaming";
       }
       else {
         this.movement = "still";
