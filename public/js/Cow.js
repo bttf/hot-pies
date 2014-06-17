@@ -1,16 +1,18 @@
-function Cow(canvasWidth, canvasHeight) {
+function Cow(canvas) {
+  this.canvas = canvas; 
+
   var assets = ['img/cow1_left.png',
                 'img/cow2_left.png',
                 'img/cow1_right.png',
                 'img/cow2_right.png'];
 
-  var x_padding = canvasWidth * .1;
-  this.x = Math.floor((Math.random() * (canvasWidth - (x_padding * 2)) + x_padding));
-  this.y = canvasHeight + Math.floor(Math.random() + 20);
+  var x_padding = canvas.width * .1;
+  this.x = Math.floor((Math.random() * (canvas.width - (x_padding * 2)) + x_padding));
+  this.y = canvas.height + Math.floor(Math.random() + 20);
 
   var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
   this.target_x = this.x + (plusOrMinus * 100);
-  this.target_y = canvasHeight - (Math.floor(Math.random() * 100) + 46);
+  this.target_y = canvas.height - (Math.floor(Math.random() * 100) + 46);
 
   this.movement = "still";
   this.speed = 5;

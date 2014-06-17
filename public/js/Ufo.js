@@ -1,4 +1,6 @@
-function Ufo(canvasWidth, canvasHeight, targetCow) {
+function Ufo(canvas, targetCow) {
+  this.canvas = canvas;
+
   var assets = ['img/ufo1.png',
                 'img/ufo2.png',
                 'img/ufo3.png',
@@ -11,15 +13,12 @@ function Ufo(canvasWidth, canvasHeight, targetCow) {
                          'audio/explosion4.ogg',
                          'audio/explosion5.ogg'];
 
-  this.canvasWidth = canvasWidth;
-  this.canvasHeight = canvasHeight;
-
   this.ufoBeam = new UfoBeam(targetCow.target_y);
   this.beamDelay = 500;
   this.beamTick = 0;
 
-  this.x = this.initX(canvasWidth);
-  this.y = this.initY(canvasHeight);
+  this.x = this.initX(canvas.width);
+  this.y = this.initY(canvas.height);
 
   this.explosionSfx = [];
   for (var i = 0; i < explosionAssets.length; i++) {

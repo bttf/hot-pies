@@ -1,15 +1,17 @@
 describe("Background", function() {
   var bg;
-  var canvasWidth = 800;
-  var canvasHeight = 800;
-
+  var canvas;
   beforeEach(function() {
-    bg = new Background(canvasWidth, canvasHeight);
+    canvas = {
+      width: 800,
+      height: 800
+    };
+    bg = new Background(canvas);
   });
 
   describe("constructor", function() {
-    it ("should accept two parameters (canvasWidth, canvasHeight)", function () {
-      expect(Background.length).toEqual(2);
+    it ("should accept one param(canvas)", function () {
+      expect(Background.length).toEqual(1);
     });
     it ("should have foreground defined", function() {
       expect(bg.foreground).toBeDefined();
@@ -17,11 +19,8 @@ describe("Background", function() {
     it ("should have background defined", function() {
       expect(bg.background).toBeDefined();
     });
-    it ("should have canvasWidth defined", function() {
-      expect(bg.canvasWidth).toBeDefined();
-    });
-    it ("should have canvasHeight defined", function() {
-      expect(bg.canvasHeight).toBeDefined();
+    it ("should have canvas defined", function() {
+      expect(bg.canvas).toBeDefined();
     });
     it ("should have frames defined", function() {
       expect(bg.frames).toBeDefined();

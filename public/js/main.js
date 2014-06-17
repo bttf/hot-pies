@@ -60,7 +60,8 @@ var init_browser = function() {
 
 var init = function() {
   init_browser();
-  game.init(canvas.width, canvas.height);
+  //game.init(canvas.width, canvas.height);
+  game.init(canvas);
 };
 
 var loop = function(time) {

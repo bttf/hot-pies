@@ -1,10 +1,13 @@
 describe('FarmerJohn', function() {
-  var canvasWidth = 800,
-      canvasHeight = 800;
   var farmerJohn;
+  var canvas;
 
   beforeEach(function() {
-    farmerJohn = new FarmerJohn();
+    canvas = {
+      width: 800,
+      height: 800
+    };
+    farmerJohn = new FarmerJohn(canvas);
   });
 
   describe('constructor', function() {

@@ -1,9 +1,8 @@
-function Background(canvasWidth, canvasHeight) {
+function Background(canvas) {
+  this.canvas = canvas;
+
   var assets = ['img/grass1.png',
                 'img/sky1.png'];
-
-  this.canvasWidth = canvasWidth;
-  this.canvasHeight = canvasHeight;
 
   this.frames = [];
   for (var i = 0; i < assets.length; i++) {
@@ -27,8 +26,8 @@ Background.prototype.drawBg = function(context) {
   if (this.allImagesLoaded()) {
     var x = 0;
     var y = 0;
-    var rightBound = this.canvasWidth + (2 * this.background.width);
-    var lowerBound = this.canvasHeight + (this.background.height / 2);
+    var rightBound = this.canvas.width + (2 * this.background.width);
+    var lowerBound = this.canvas.height + (this.background.height / 2);
 
     for (var i = y; i < lowerBound; i += this.background.height) {
       for (var j = x; j < rightBound; j += this.background.width) {
@@ -41,9 +40,9 @@ Background.prototype.drawBg = function(context) {
 Background.prototype.drawFg = function(context) {
   if (this.allImagesLoaded()) {
     var x = 0;
-    var y = this.canvasHeight - (this.foreground.width / 2);
-    var rightBound = this.canvasWidth + this.foreground.width;
-    var upperBound = this.canvasHeight - (this.canvasHeight / 4);
+    var y = this.canvas.height - (this.foreground.width / 2);
+    var rightBound = this.canvas.width + this.foreground.width;
+    var upperBound = this.canvas.height - (this.canvas.height / 4);
 
     for (var i = x; i < rightBound; i += this.foreground.width) {
       context.drawImage(this.foreground, i, y);

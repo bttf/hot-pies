@@ -1,10 +1,16 @@
 describe("Game", function() {
   var game;
+  var canvas;
 
   beforeEach(function() {
-    game = new Game();
+    canvas = {
+      width: 800,
+      height: 800
+    };
+    game = new Game(canvas);
+    game.init(canvas);
     game.muteAudio = true;
-    game.init(800, 800);
+    game.shotgun.muteAudio = true;
   });
 
   describe("constructor", function() {
@@ -23,8 +29,6 @@ describe("Game", function() {
   });
 
   describe("'init' function", function() {
-    var canvasWidth = 500,
-      canvasHeight = 500;
     it ("should have an 'init' function", function() {
       expect(typeof game.init).toBe('function');
     });
@@ -35,12 +39,12 @@ describe("Game", function() {
       game.muteAudio = undefined;
       spyOn(mockMusic, "play");
       game.music = mockMusic;
-      game.init();
+      game.init(canvas);
       expect(mockMusic.play).toHaveBeenCalled();
 
       game.muteAudio = false;
       game.music = mockMusic;
-      game.init();
+      game.init(canvas);
       expect(mockMusic.play).toHaveBeenCalled();
     });
     it ("should not play music if muteAudio is true", function() {
@@ -50,7 +54,7 @@ describe("Game", function() {
       game.muteAudio = true;
       spyOn(mockMusic, "play");
       game.music = mockMusic;
-      game.init();
+      game.init(canvas);
       expect(mockMusic.play).not.toHaveBeenCalled();
     });
     it ('should init UfoAi', function() {
@@ -59,7 +63,7 @@ describe("Game", function() {
       };
       spyOn(ufoAi, 'init');
       game.ufoAi = ufoAi;
-      game.init(canvasWidth, canvasHeight);
+      game.init(canvas);
       expect(ufoAi.init).toHaveBeenCalled();
     });
   });
@@ -159,10 +163,6 @@ describe("Game", function() {
   });
 
   describe("mouse_down", function() {
-    beforeEach(function() {
-      game.shotgun.muteAudio = true;
-    });
-
     it ("should execute ufoHit if shotgun isCocked", function () {
       game.shotgun.isCocked = true;
       var mockUfoHit = {

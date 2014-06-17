@@ -79,11 +79,8 @@ describe("Ufo", function() {
   });
 
   describe("stateful stuff", function() {
-    it ("should have a 'canvasWidth'", function() {
-      expect(ufo.canvasWidth).toBeDefined();
-    });
-    it ("should have a 'canvasHeight'", function() {
-      expect(ufo.canvasHeight).toBeDefined();
+    it ("should have canvas defined", function() {
+      expect(ufo.canvas).toBeDefined();
     });
     it ("should have an 'fps'", function() {
       expect(ufo.fps).toBeDefined();

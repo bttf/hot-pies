@@ -2,7 +2,11 @@ describe("Cow.js", function() {
   var cow;
 
   beforeEach(function() {
-    cow = new Cow(800, 800);
+    var canvas = {
+      width: 800,
+      height: 800
+    };
+    cow = new Cow(canvas);
   });
 
   describe("constructor", function() {
@@ -72,9 +76,6 @@ describe("Cow.js", function() {
   });
 
   describe("moveCow", function() {
-    beforeEach(function() {
-      var cow = new Cow(800, 800);
-    });
     it ("should accept arity of 1, time", function () {
       expect(cow.moveCow.length).toEqual(1);
     });
@@ -136,10 +137,6 @@ describe("Cow.js", function() {
   });
 
   describe("setDirection", function() {
-    beforeEach(function() {
-      var cow = new Cow(800, 800);
-    });
-
     it ("should move up-right if x is less than targetx-5 and y is greater than target_y", function() {
       cow.x = 0;
       cow.target_x = 10;

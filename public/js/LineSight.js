@@ -1,11 +1,13 @@
-function LineSight(canvasWidth, canvasHeight, shooter) {
+function LineSight(canvas, shooter) {
+  this.canvas = canvas;
+
   this.mouseX = 0;
   this.mouseY = 0;
 
   this.shooter = shooter;
 
-  this.x = canvasWidth;
-  this.y = canvasHeight;
+  this.x = canvas.width;
+  this.y = canvas.height;
 }
 
 LineSight.prototype.render = function(time) {

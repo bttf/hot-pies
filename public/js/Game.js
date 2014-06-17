@@ -3,8 +3,6 @@ function Game() {
   this.ufos = [];
   this.ufoAi = new UfoAi();
   this.lineSight = {};
-  this.canvasWidth;
-  this.canvasHeight;
 
   this.lastTick = 0;
   this.cowDelay = 2000;
@@ -15,23 +13,22 @@ function Game() {
   this.muteAudio = 'true';
 }
 
-Game.prototype.init = function(canvasWidth, canvasHeight) {
+Game.prototype.init = function(canvas) {
   if (!this.muteAudio)
     this.music.play();
 
-  this.canvasWidth = canvasWidth;
-  this.canvasHeight = canvasHeight;
+  this.canvas = canvas;
   this.shotgun = new ShotGun();
-  this.farmerJohn = new FarmerJohn(canvasWidth, canvasHeight);
-  this.lineSight = new LineSight(canvasWidth, canvasHeight, this.farmerJohn);
-  this.background = new Background(canvasWidth, canvasHeight);
-  this.ufoAi.init(canvasWidth, canvasHeight);
+  this.farmerJohn = new FarmerJohn(canvas);
+  this.lineSight = new LineSight(canvas, this.farmerJohn);
+  this.background = new Background(canvas);
+  this.ufoAi.init(canvas);
 };
 
 Game.prototype.render = function(time) {
   if (time > this.lastTick + this.cowDelay) {
     var lastCow;
-    this.cows.push(new Cow(this.canvasWidth, this.canvasHeight));
+    this.cows.push(new Cow(this.canvas));
     lastCow = this.cows.length - 1;
     this.lastTick = time;
   }
@@ -67,7 +64,7 @@ Game.prototype.draw = function(context) {
 
 Game.prototype.key_down = function(e) {
   if (e.keyCode == 85) {
-    this.ufos.push(new Ufo(this.canvasWidth, this.canvasHeight, this.cows[0]));
+    this.ufos.push(new Ufo(this.canvas, this.cows[0]));
   }
   this.shotgun.key_down(e);
 };
