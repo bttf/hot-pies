@@ -1,14 +1,18 @@
 describe('UfoAi', function() {
   var ufoAi;
-  var canvasWidth = 500,
-    canvasHeight = 500;
+  var canvas;
   beforeEach(function() {
-    ufoAi = new UfoAi();
+    canvas = {
+      width: 500,
+      height: 500
+    };
+
+    ufoAi = new UfoAi(canvas);
   });
 
   describe('constructor', function() {
-    it ('should instantiate', function() {
-      expect(ufoAi).toBeDefined();
+    it ('should have an arity of one, for the canvas', function() {
+      expect(UfoAi.length).toEqual(1);
     });
     it ('should keep a lastTick property', function() {
       expect(ufoAi.lastTick).toBeDefined();
@@ -22,19 +26,8 @@ describe('UfoAi', function() {
     it ('should keep a ufoDelcayDecayCutoff property', function() {
       expect(ufoAi.ufoDelayDecayCutoff).toBeDefined();
     });
-  });
-
-  describe('init', function() {
-    it ('should exist as a function', function() {
-      expect(typeof ufoAi.init).toBe('function');
-    });
-    it ('should have an arity of two, for canvasWidth and canvasHeight', function() {
-      expect(ufoAi.init.length).toEqual(2);
-    });
-    it ('should set object properties canvasWidth and canvasHeight', function() {
-      ufoAi.init(canvasWidth, canvasHeight);
-      expect(ufoAi.canvasWidth).toEqual(canvasWidth);
-      expect(ufoAi.canvasHeight).toEqual(canvasHeight);
+    it ('should have a canvas property', function() {
+      expect(ufoAi.canvas).toBeDefined();
     });
   });
 

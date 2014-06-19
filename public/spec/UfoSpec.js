@@ -1,8 +1,14 @@
 describe("Ufo", function() {
-  var cow, ufo;
+  var cow, 
+    ufo,
+    canvas;
   beforeEach(function() {
-    cow = new Cow(0,0);
-    ufo = new Ufo(0, 0, cow);
+    canvas = {
+      width: 10,
+      height: 10
+    };
+    cow = new Cow(canvas);
+    ufo = new Ufo(canvas, cow);
   });
 
   describe("constructor", function() {
@@ -94,10 +100,6 @@ describe("Ufo", function() {
   });
 
   describe("updateFrame", function() {
-    beforeEach(function() {
-      var cow = new Cow(0,0);
-      var ufo = new Ufo(cow, 0, 0);
-    });
     it ("should accept one parameter (time)", function() {
       expect(ufo.updateFrame.length).toEqual(1);
     });
@@ -111,12 +113,8 @@ describe("Ufo", function() {
   });
 
   describe("setMovementBasedOnCow", function() {
-    var cow;
-    var ufo;
     var time;
     beforeEach(function() {
-      cow = new Cow(0,0);
-      ufo = new Ufo(cow, 0, 0);
       time = 12345;
     });
     it ("should exist", function() {
@@ -217,10 +215,6 @@ describe("Ufo", function() {
   });
 
   describe("moveUfo", function() {
-    beforeEach(function() {
-      var cow = new Cow(0,0);
-      var ufo = new Ufo(cow, 0, 0);
-    });
     it ("should exist", function() {
       expect(typeof ufo.moveUfo).toBe("function");
     });
@@ -258,10 +252,6 @@ describe("Ufo", function() {
   });
 
   describe("initX", function() {
-    beforeEach(function() {
-      var cow = new Cow(0, 0);
-      var ufo = new Ufo(cow, 0, 0);
-    });
     it ("should have an arity of 1", function() {
       expect(ufo.initX.length).toEqual(1);
     });

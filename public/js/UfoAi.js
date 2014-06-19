@@ -1,21 +1,17 @@
-function UfoAi() {
+function UfoAi(canvas) {
+  this.canvas = canvas;
   this.lastTick = 0;
   this.ufoDelay = 1500;
   this.ufoDelayDecay = 50;
   this.ufoDelayDecayCutoff = 850;
 }
 
-UfoAi.prototype.init = function(canvasWidth, canvasHeight) {
-  this.canvasWidth = canvasWidth;
-  this.canvasHeight = canvasHeight;
-};
-
 UfoAi.prototype.generateUfos = function(ufos, cows, time) {
   // find random cow index
   this.randCowIndex = Math.floor(Math.random() * cows.length);
   // add a new ufo
   if (time > this.lastTick + this.ufoDelay) {
-    ufos.push(new Ufo(this.canvasWidth, this.canvasHeight, cows[this.randCowIndex]));
+    ufos.push(new Ufo(this.canvas, cows[this.randCowIndex]));
     this.lastTick = time;
     if (this.ufoDelay > this.ufoDelayDecayCutoff)
       this.ufoDelay -= this.ufoDelayDecay;

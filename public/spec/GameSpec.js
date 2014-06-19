@@ -57,15 +57,6 @@ describe("Game", function() {
       game.init(canvas);
       expect(mockMusic.play).not.toHaveBeenCalled();
     });
-    it ('should init UfoAi', function() {
-      var ufoAi = {
-        'init': function() {},
-      };
-      spyOn(ufoAi, 'init');
-      game.ufoAi = ufoAi;
-      game.init(canvas);
-      expect(ufoAi.init).toHaveBeenCalled();
-    });
   });
 
   describe ("'render' function", function() {

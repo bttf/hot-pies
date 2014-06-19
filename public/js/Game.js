@@ -1,7 +1,6 @@
 function Game() {
   this.cows = [];
   this.ufos = [];
-  this.ufoAi = new UfoAi();
   this.lineSight = {};
 
   this.lastTick = 0;
@@ -22,7 +21,7 @@ Game.prototype.init = function(canvas) {
   this.farmerJohn = new FarmerJohn(canvas);
   this.lineSight = new LineSight(canvas, this.farmerJohn);
   this.background = new Background(canvas);
-  this.ufoAi.init(canvas);
+  this.ufoAi = new UfoAi(canvas);
 };
 
 Game.prototype.render = function(time) {
