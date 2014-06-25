@@ -6,15 +6,17 @@ function Game() {
   this.lastTick = 0;
   this.cowDelay = 2000;
 
-  this.music = new Audio('audio/giltrythall.ogg');
-  this.music.preload = "auto";
+  this.birds = new Audio('audio/birds.ogg');
+  this.birds.preload = "auto";
+  this.birds.volume = 0.3;
+  this.birds.loop = true;
 
-  this.muteAudio = 'true';
+  this.muteAudio = false;
 }
 
 Game.prototype.init = function(canvas) {
   if (!this.muteAudio)
-    this.music.play();
+    this.birds.play();
 
   this.canvas = canvas;
   this.shotgun = new ShotGun();
@@ -26,9 +28,7 @@ Game.prototype.init = function(canvas) {
 
 Game.prototype.render = function(time) {
   if (time > this.lastTick + this.cowDelay) {
-    var lastCow;
     this.cows.push(new Cow(this.canvas));
-    lastCow = this.cows.length - 1;
     this.lastTick = time;
   }
   if (this.cows.length > 0) 
@@ -56,9 +56,9 @@ Game.prototype.draw = function(context) {
   });
 
   // debug
-  context.fillStyle = "red";
-  context.font = "bold 16px Georgia";
-  context.fillText("ufoDelay: " + this.ufoAi.ufoDelay, 100, 100);
+  //context.fillStyle = "red";
+  //context.font = "bold 16px Georgia";
+  //context.fillText("ufoDelay: " + this.ufoAi.ufoDelay, 100, 100);
 };
 
 Game.prototype.key_down = function(e) {

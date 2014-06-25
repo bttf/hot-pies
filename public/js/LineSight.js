@@ -48,7 +48,7 @@ LineSight.prototype.doesIntersect = function(obj) {
       typeof obj.y === "undefined" ||
       typeof obj.width === "undefined" ||
       typeof obj.height === "undefined") {
-    console.log('debug: obj is missing properties');
+    // console.log('debug: obj is missing properties');
     return false;
   }
 
@@ -56,7 +56,7 @@ LineSight.prototype.doesIntersect = function(obj) {
     if (y > obj.y && x > obj.x
         && y < obj.y + obj.height
         && x < obj.x + obj.width) {
-      console.log('you just hit obj at %d, %d', obj.x, obj.y);
+      // console.log('you just hit obj at %d, %d', obj.x, obj.y);
       return true;
     }
     dx = this.x - this.mouseX;

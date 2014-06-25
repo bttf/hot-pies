@@ -8,8 +8,8 @@ describe("Game", function() {
       height: 800
     };
     game = new Game(canvas);
-    game.init(canvas);
     game.muteAudio = true;
+    game.init(canvas);
     game.shotgun.muteAudio = true;
   });
 
@@ -23,8 +23,8 @@ describe("Game", function() {
     it ("should have a ufoAi object instantiated", function() {
       expect(game.ufoAi).toBeDefined();
     });
-    it ("should have a music Audio object", function() {
-      expect(Object.prototype.toString.call(game.music)).toBe("[object HTMLAudioElement]");
+    it ("should have a birds Audio object", function() {
+      expect(Object.prototype.toString.call(game.birds)).toBe("[object HTMLAudioElement]");
     });
   });
 
@@ -32,30 +32,30 @@ describe("Game", function() {
     it ("should have an 'init' function", function() {
       expect(typeof game.init).toBe('function');
     });
-    it ("should play music if muteAudio is false/undefined", function() {
-      var mockMusic = {
+    it ("should play birds if muteAudio is false/undefined", function() {
+      var mockBirds = {
         play: function() {},
       };
       game.muteAudio = undefined;
-      spyOn(mockMusic, "play");
-      game.music = mockMusic;
+      spyOn(mockBirds, "play");
+      game.birds = mockBirds;
       game.init(canvas);
-      expect(mockMusic.play).toHaveBeenCalled();
+      expect(mockBirds.play).toHaveBeenCalled();
 
       game.muteAudio = false;
-      game.music = mockMusic;
+      game.music = mockBirds;
       game.init(canvas);
-      expect(mockMusic.play).toHaveBeenCalled();
+      expect(mockBirds.play).toHaveBeenCalled();
     });
-    it ("should not play music if muteAudio is true", function() {
-      var mockMusic = {
+    it ("should not play birds if muteAudio is true", function() {
+      var mockBirds = {
         play: function() {},
       };
       game.muteAudio = true;
-      spyOn(mockMusic, "play");
-      game.music = mockMusic;
+      spyOn(mockBirds, "play");
+      game.birds = mockBirds;
       game.init(canvas);
-      expect(mockMusic.play).not.toHaveBeenCalled();
+      expect(mockBirds.play).not.toHaveBeenCalled();
     });
   });
 

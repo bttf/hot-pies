@@ -88,7 +88,7 @@ Cow.prototype.setDirection = function() {
     }
   }
   else if (this.y > this.target_y) {
-    console.log('setDirection up');
+    // console.log('setDirection up');
     this.movement = "up";
   }
   else { 
@@ -97,13 +97,13 @@ Cow.prototype.setDirection = function() {
 };
 
 Cow.prototype.moveCow = function(time) {
-  console.log('HERE');
+  // console.log('HERE');
   switch (this.movement) {
     case "still":
-      console.log('still');
+      // console.log('still');
       break;
     case "up-left":
-      console.log('upleft');
+      // console.log('upleft');
       if (this.delayTickHasPassed(time)) {
         this.x -= (this.speed);
         this.y -= (this.speed);
@@ -112,7 +112,7 @@ Cow.prototype.moveCow = function(time) {
       }
       break;
     case "up-right":
-      console.log('upright');
+      // console.log('upright');
       if (this.delayTickHasPassed(time)) {
         this.x += (this.speed);
         this.y -= (this.speed);
@@ -121,7 +121,7 @@ Cow.prototype.moveCow = function(time) {
       }
       break;
     case "up":
-      console.log('up');
+      // console.log('up');
       if (this.delayTickHasPassed(time)) {
         this.y -= this.speed;
         this.updateFrame();
@@ -129,7 +129,7 @@ Cow.prototype.moveCow = function(time) {
       }
       break;
     case "left":
-      console.log('left');
+      // console.log('left');
       if (this.delayTickHasPassed(time)) {
         this.x -= this.speed;
         this.updateFrame();
@@ -137,7 +137,7 @@ Cow.prototype.moveCow = function(time) {
       }
       break;
     case "right":
-      console.log('right');
+      // console.log('right');
       if (this.delayTickHasPassed(time)) {
         this.x += this.speed;
         this.updateFrame();
@@ -145,7 +145,7 @@ Cow.prototype.moveCow = function(time) {
       }
       break;
     case "beaming":
-      console.log('shit!');
+      // console.log('shit!');
       this.y -= 2;
       this.updateFrame();
       this.lastTick = time;
