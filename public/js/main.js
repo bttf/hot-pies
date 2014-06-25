@@ -15,7 +15,7 @@ var add_event_listeners = function() {
   body.addEventListener("keydown", key_down, false);
   body.addEventListener("keyup", key_up, false);
   body.addEventListener("keypress", key_press, false);
-   body.addEventListener("mousedown", mouse_down, false);
+  body.addEventListener("mousedown", mouse_down, false);
   // body.addEventListener("mouseup", mouse_up, false);
   body.addEventListener("mousemove", mouse_move, false);
 };
@@ -41,16 +41,16 @@ var mouse_down = function(e) {
 };
 
 var init_browser = function() {
-	body = document.getElementsByTagName("body")[0];
-	canvas = document.createElement("canvas");
-	canvas.id = "canvas";
-	canvas.width = window.innerWidth - 15;
-	canvas.height = window.innerHeight - 25;
+  body = document.getElementsByTagName("body")[0];
+  canvas = document.createElement("canvas");
+  canvas.id = "canvas";
+  canvas.width = window.innerWidth - 15;
+  canvas.height = window.innerHeight - 25;
   //canvas.style.cursor = "none";
-	context = canvas.getContext('2d');
+  context = canvas.getContext('2d');
   context.font = "16px Arial";
   context.fillStyle = "black";
-	body.appendChild(canvas);
+  body.appendChild(canvas);
   add_event_listeners();
   horizon = (canvas.height / 2);
   center_axis = (canvas.width / 2);
