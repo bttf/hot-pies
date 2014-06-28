@@ -4,6 +4,13 @@ var http = require('http')
   , server = http.createServer(app);
 var engines = require('consolidate');
 var path = require('path');
+var fs = require('fs');   // development purposes
+
+if (fs.existsSync('./development')) 
+  app.locals.development = true;
+else
+  app.locals.development = false;
+
 
 server.listen(port);
 console.log("Lets have a listen on port "+ port + "...");
