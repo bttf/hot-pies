@@ -140,6 +140,16 @@ describe("Cow.js", function() {
       cow.moveCow((new Date).getTime());
       expect(cow_y < cow.y).toEqual(true);
     });
+    it ("should increase y up to cow.target_y and switch movement to 'still'", function() {
+      cow.y = 0;
+      cow.target_y = 5;
+      var buffer = cow.speed;
+      cow.movement = "dropping";
+      for (var i = 0; i < 10; i++) 
+        cow.moveCow((new Date).getTime());
+      expect(cow.y >= cow.target_y && cow.y < cow.target_y + buffer).toEqual(true);
+      expect(cow.movement).toBe("still");
+    });
   });
 
   describe("setDirection", function() {
