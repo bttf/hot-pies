@@ -67,7 +67,8 @@ var init = function() {
 var loop = function(time) {
   requestAnimFrame(loop);
   context.clearRect(0, 0, canvas.width, canvas.height);
-  game.render(time);
+  if(!game.pause)
+    game.render(time);
   game.draw(context, time);
 };
 

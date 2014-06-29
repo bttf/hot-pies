@@ -12,6 +12,7 @@ function Game() {
   this.birds.loop = true;
 
   this.muteAudio = false;
+  this.pause = false;
 }
 
 Game.prototype.init = function(canvas) {
@@ -24,15 +25,18 @@ Game.prototype.init = function(canvas) {
   this.lineSight = new LineSight(canvas, this.farmerJohn);
   this.background = new Background(canvas);
   this.ufoAi = new UfoAi(canvas);
+  this.cows.push(new Cow(canvas));
 };
 
 Game.prototype.render = function(time) {
+  this.cleanUp();
+
   if (time > this.lastTick + this.cowDelay) {
     this.cows.push(new Cow(this.canvas));
     this.lastTick = time;
   }
   if (this.cows.length > 0) 
-    this.ufoAi.generateUfos(this.ufos, this.cows, time);
+    //this.ufoAi.generateUfos(this.ufos, this.cows, time);
   this.background.render(time);
   this.cows.forEach(function(cow, index, cows) {
     cow.render(time);
@@ -55,15 +59,25 @@ Game.prototype.draw = function(context) {
     ufo.draw(context);
   });
 
-  // debug
-  //context.fillStyle = "red";
-  //context.font = "bold 16px Georgia";
-  //context.fillText("ufoDelay: " + this.ufoAi.ufoDelay, 100, 100);
+  //debug
+  var debugStr = "";
+  context.fillStyle = "red";
+  context.font = "bold 16px courier";
+  if (this.pause)
+    debugStr += "PAUSED\r\n"
+  debugStr += "ufoDelay: " + this.ufoAi.ufoDelay + "\r\n";
+  debugStr += "game.ufos.length: " + this.ufos.length + "\r\n";
+  context.fillText(debugStr, 10, 20);
 };
 
 Game.prototype.key_down = function(e) {
-  if (e.keyCode == 85) {
-    this.ufos.push(new Ufo(this.canvas, this.cows[0]));
+  switch(e.keyCode) {
+    case 80:
+      this.pause = !this.pause;
+      break;
+    case 85:
+      this.ufos.push(new Ufo(this.canvas, this.cows[0]));
+      break;
   }
   this.shotgun.key_down(e);
 };
@@ -105,3 +119,9 @@ Game.prototype.ufoHit = function() {
     return false;
 };
 
+Game.prototype.cleanUp = function() {
+  this.ufos.forEach(function(ufo, index, ufos) {
+    if (ufo.hasExploded)
+      ufos.splice(index, 1);
+  });
+};

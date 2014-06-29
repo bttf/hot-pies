@@ -4,8 +4,9 @@ var http = require('http')
   , server = http.createServer(app);
 var engines = require('consolidate');
 var path = require('path');
-var fs = require('fs');   // development purposes
 
+// development purposes
+var fs = require('fs');   
 if (fs.existsSync('./development')) 
   app.locals.development = true;
 else

@@ -13,6 +13,8 @@ function Ufo(canvas, targetCow) {
                          'audio/explosion4.ogg',
                          'audio/explosion5.ogg'];
 
+  this.muteAudio = false;
+
   this.ufoBeam = new UfoBeam(targetCow.target_y);
   this.beamDelay = 500;
   this.beamTick = 0;
@@ -50,8 +52,10 @@ function Ufo(canvas, targetCow) {
 
 Ufo.prototype.render = function(time) {
   this.updateFrame(time);
-  if (this.exploding) {
+  if (this.movement === "exploding") {
     this.moveExplodingUfo(time);
+    if (this.prevMovement === "beaming")
+      this.targetCow.drop();
   }
   else {
     this.setMovementBasedOnCow(time);
@@ -61,12 +65,10 @@ Ufo.prototype.render = function(time) {
 
 Ufo.prototype.draw = function(context) {
   if (this.allImagesLoaded()) {
-    if (this.tilt != 0 && this.movement != "beaming") { 
+    if (this.tilt != 0 && this.movement != "beaming")  
       drawRotatedImage(context, this.frames[this.frame], this.x, this.y, this.tilt);
-    }
-    else {
+    else 
       context.drawImage(this.frames[this.frame], this.x, this.y);
-    }
 
     if (this.movement === "beaming") {
       this.ufoBeam.draw(context, this);
@@ -87,7 +89,7 @@ function drawRotatedImage(context, image, x, y, angle) {
 };
 
 Ufo.prototype.updateFrame = function(time) {
-  if (!this.exploding) {
+  if (this.movement !== "exploding") {
     if (time > (this.lastTick + this.fps)) {
       this.frame = (this.frame + 1) % 2;
       this.lastTick = time;
@@ -95,9 +97,10 @@ Ufo.prototype.updateFrame = function(time) {
   }
   else {
     if (time > (this.lastTick + this.explodingFps)) {
-      if (this.frame < 5) {
+      if (this.frame == this.frames.length - 1)
+        this.hasExploded = true;
+      if (this.frame < this.frames.length - 1) 
         this.frame++;
-      }
       this.lastTick = time;
     }
   }
@@ -124,7 +127,7 @@ Ufo.prototype.moveUfo = function(time) {
 }
 
 Ufo.prototype.setMovementBasedOnCow = function(time) {
-  if (this.targetCow.movement === "still") {
+  if (this.targetCow.movement === "still" || this.targetCow.movement === "dropping") {
     var cow = this.targetCow;
     if (this.x > cow.x + 5) {
       this.movement = "left";
@@ -162,7 +165,8 @@ Ufo.prototype.initY = function(canvasHeight) {
 
 Ufo.prototype.explode = function() {
   this.explodeTick = this.lastTick + this.explodeDelay;
-  this.exploding = true;
+  this.prevMovement = this.movement;
+  this.movement = "exploding";
   this.ufoBeam.reset();
 };
 
@@ -182,13 +186,13 @@ Ufo.prototype.allImagesLoaded = function() {
 
 Ufo.prototype.moveExplodingUfo = function(time) {
   if (time > this.explodeTick) {
-    if (!this.explosionPlayed) {
+    if (!this.explosionPlayed && !this.muteAudio) {
       var index = Math.floor(Math.random() * this.explosionSfx.length);
       this.explosionSfx[index].play();
       this.explosionPlayed = true;
     }
   }
-  switch (this.movement) {
+  switch (this.prevMovement) {
     case "left":
       this.x -= this.speed * 2;
       this.y += 2;

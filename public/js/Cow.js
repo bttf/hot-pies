@@ -23,6 +23,8 @@ function Cow(canvas) {
   this.lastTick = 0;
   this.fps = 1000/5;
 
+  this.dropping = false;
+
   for (var i = 0; i < assets.length; i++) {
     this.frames.push(new Image());
     this.frames[i].src = assets[i];
@@ -67,43 +69,31 @@ Cow.prototype.updateFrame = function() {
 };
 
 Cow.prototype.setDirection = function() {
-  if (this.movement === "beaming") {
+  if (this.movement === "beaming" ||
+      this.movement === "dropping") 
     return;
-  }
   
-  if (this.x < this.target_x - 5) {
-    if (this.y > this.target_y) {
+  if (this.x < this.target_x - 5) 
+    if (this.y > this.target_y) 
       this.movement = "up-right";
-    }
-    else {
+    else 
       this.movement = "right";
-    }
-  }
-  else if (this.x > this.target_x + 5) {
-    if (this.y > this.target_y) {
+  else if (this.x > this.target_x + 5) 
+    if (this.y > this.target_y) 
       this.movement = "up-left";
-    }
-    else {
+    else 
       this.movement = "left";
-    }
-  }
-  else if (this.y > this.target_y) {
-    // console.log('setDirection up');
+  else if (this.y > this.target_y) 
     this.movement = "up";
-  }
-  else { 
+  else  
     this.movement = "still";
-  }
 };
 
 Cow.prototype.moveCow = function(time) {
-  // console.log('HERE');
   switch (this.movement) {
     case "still":
-      // console.log('still');
       break;
     case "up-left":
-      // console.log('upleft');
       if (this.delayTickHasPassed(time)) {
         this.x -= (this.speed);
         this.y -= (this.speed);
@@ -112,7 +102,6 @@ Cow.prototype.moveCow = function(time) {
       }
       break;
     case "up-right":
-      // console.log('upright');
       if (this.delayTickHasPassed(time)) {
         this.x += (this.speed);
         this.y -= (this.speed);
@@ -121,7 +110,6 @@ Cow.prototype.moveCow = function(time) {
       }
       break;
     case "up":
-      // console.log('up');
       if (this.delayTickHasPassed(time)) {
         this.y -= this.speed;
         this.updateFrame();
@@ -129,7 +117,6 @@ Cow.prototype.moveCow = function(time) {
       }
       break;
     case "left":
-      // console.log('left');
       if (this.delayTickHasPassed(time)) {
         this.x -= this.speed;
         this.updateFrame();
@@ -137,7 +124,6 @@ Cow.prototype.moveCow = function(time) {
       }
       break;
     case "right":
-      // console.log('right');
       if (this.delayTickHasPassed(time)) {
         this.x += this.speed;
         this.updateFrame();
@@ -145,10 +131,18 @@ Cow.prototype.moveCow = function(time) {
       }
       break;
     case "beaming":
-      // console.log('shit!');
       this.y -= 2;
       this.updateFrame();
       this.lastTick = time;
       break;
+    case "dropping":
+      this.y += 2;
+      this.updateFrame();
+      this.lastTick = time;
+      break;
   }
+};
+
+Cow.prototype.drop = function() {
+  this.movement = "dropping";
 };

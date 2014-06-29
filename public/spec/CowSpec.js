@@ -134,6 +134,12 @@ describe("Cow.js", function() {
       cow.moveCow(x);
       expect(cow.lastTick).toEqual(x);
     });
+    it ("should increase y if movement is equal to 'dropping'", function() {
+      var cow_y = cow.y;
+      cow.movement = "dropping";
+      cow.moveCow((new Date).getTime());
+      expect(cow_y < cow.y).toEqual(true);
+    });
   });
 
   describe("setDirection", function() {
@@ -195,6 +201,11 @@ describe("Cow.js", function() {
       cow.movement = "beaming";
       cow.setDirection();
       expect(cow.movement).toBe("beaming");
+    });
+    it ("should maintain 'dropping' if it is already set", function() {
+      cow.movement = "dropping";
+      cow.setDirection();
+      expect(cow.movement).toBe("dropping");
     });
   });
 
@@ -296,6 +307,17 @@ describe("Cow.js", function() {
         cow.updateFrame();
         expect(cow.frame).toEqual(0);
       }
+    });
+  });
+
+  describe("drop method", function() {
+    it ("should exist as a function", function() {
+      expect(typeof cow.drop).toBe("function");
+    });
+    it ("should set cow.movement to 'dropping'", function() {
+      expect(cow.movement).not.toBe("dropping");
+      cow.drop();
+      expect(cow.movement).toBe("dropping");
     });
   });
 });

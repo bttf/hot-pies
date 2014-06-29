@@ -26,6 +26,9 @@ describe("Game", function() {
     it ("should have a birds Audio object", function() {
       expect(Object.prototype.toString.call(game.birds)).toBe("[object HTMLAudioElement]");
     });
+    it ("should have a pause property", function() {
+      expect(game.pause).toBeDefined();
+    });
   });
 
   describe("'init' function", function() {
@@ -57,6 +60,12 @@ describe("Game", function() {
       game.init(canvas);
       expect(mockBirds.play).not.toHaveBeenCalled();
     });
+    it ("should push an initial cow into game.cows", function() {
+      game.cows = [];
+      expect(game.cows.length).toEqual(0);
+      game.init(canvas);
+      expect(game.cows.length).toEqual(1);
+    });
   });
 
   describe ("'render' function", function() {
@@ -67,24 +76,24 @@ describe("Game", function() {
     it ("should accept one (1) parameter for time", function() {
       expect(game.render.length).toEqual(1);
     });
-    it ("should make a call to ufoAi.generateUfos if cows is > 0", function() {
-      var ufoAi = {
-        'generateUfos': function() {},
-      };
-      spyOn(ufoAi, 'generateUfos');
-      game.ufoAi = ufoAi;
-      game.cows = [];
+    //it ("should make a call to ufoAi.generateUfos if cows is > 0", function() {
+      //var ufoAi = {
+        //'generateUfos': function() {},
+      //};
+      //spyOn(ufoAi, 'generateUfos');
+      //game.ufoAi = ufoAi;
+      //game.cows = [];
 
-      var time = 0;
-      game.render(time)
-      expect(ufoAi.generateUfos).not.toHaveBeenCalledWith(game.ufos, game.cows, time);
+      //var time = 0;
+      //game.render(time)
+      //expect(ufoAi.generateUfos).not.toHaveBeenCalledWith(game.ufos, game.cows, time);
 
-      game.cows = [ { 'render': function() {} } ];
+      //game.cows = [ { 'render': function() {} } ];
 
-      var time = 0;
-      game.render(time)
-      expect(ufoAi.generateUfos).toHaveBeenCalledWith(game.ufos, game.cows, time);
-    });
+      //var time = 0;
+      //game.render(time)
+      //expect(ufoAi.generateUfos).toHaveBeenCalledWith(game.ufos, game.cows, time);
+    //});
   });
 
   describe ("'draw' method", function() {
@@ -109,6 +118,20 @@ describe("Game", function() {
     it ("should have a key_press function with arity of one (1)", function() {
       expect(typeof game.key_press).toBe("function");
       expect(game.key_press.length).toEqual(1);
+    });
+    it ("should toggle game.pause if keyCode 80 (p) is received", function() {
+      var e = { keyCode: 80 };
+      expect(game.pause).toBe(false);
+      game.key_down(e);
+      expect(game.pause).toBe(true);
+      game.key_down(e);
+      expect(game.pause).toBe(false);
+    });
+    it ("should add a ufo to ufos if keycode 85 (u) is received", function() {
+      var e = { keyCode: 85 };
+      var ufos_length = game.ufos.length;
+      game.key_down(e);
+      expect(game.ufos.length).toEqual(ufos_length + 1);
     });
   });
 
@@ -180,6 +203,25 @@ describe("Game", function() {
       game.ufoHit = mockUfoHit;
       game.mouse_down(e);
       expect(ufo2.explode).toHaveBeenCalled();
+    });
+  });
+  
+  describe("cleanUp", function() {
+    it ("should exist as a function", function() {
+      expect(typeof game.cleanUp).toBe("function");
+    });
+    it ("should remove any ufos that have ufo hasExploded to true", function() {
+      var ufo1 = {
+        hasExploded: false
+      };
+      var ufo2 = {
+        hasExploded: true
+      };
+      game.ufos = [ ufo1, ufo2 ];
+      expect(game.ufos.length).toEqual(2);
+      game.cleanUp();
+      expect(game.ufos.length).toEqual(1);
+      expect(game.ufos[0].hasExploded).toEqual(false);
     });
   });
 });

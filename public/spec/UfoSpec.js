@@ -9,6 +9,7 @@ describe("Ufo", function() {
     };
     cow = new Cow(canvas);
     ufo = new Ufo(canvas, cow);
+    ufo.muteAudio = true;
   });
 
   describe("constructor", function() {
@@ -41,6 +42,9 @@ describe("Ufo", function() {
         expect(Object.prototype.toString.call(ufo.explosionSfx[i])).toBe("[object HTMLAudioElement]");
       }
     });
+    it ("should have a muteAudio property", function() {
+      expect(ufo.muteAudio).toBeDefined();
+    });
   });
 
   describe ("rendering", function() {
@@ -55,6 +59,39 @@ describe("Ufo", function() {
     });
     it ("needs a 'tilt' defined", function() {
       expect(ufo.tilt).toBeDefined();
+    });
+    it ("should call moveExplodingUfo if movement is set to 'exploding'", function() {
+      var mockUfo = {
+        moveExplodingUfo: function() {}
+      };
+      spyOn(mockUfo, 'moveExplodingUfo');
+      ufo.moveExplodingUfo = mockUfo.moveExplodingUfo;
+
+      ufo.render((new Date).getTime());
+      expect(mockUfo.moveExplodingUfo).not.toHaveBeenCalled();
+      ufo.movement = "exploding";
+      ufo.render((new Date).getTime());
+      expect(mockUfo.moveExplodingUfo).toHaveBeenCalled();
+    });
+    it ("should call drop on targetCow if movement is 'exploding' and if prevMovment was 'beaming'", function() {
+      var targetCow = {
+        drop: function() {}
+      };
+      spyOn(targetCow, 'drop');
+      ufo.targetCow = targetCow;
+
+      ufo.render((new Date).getTime());
+      expect(targetCow.drop).not.toHaveBeenCalled();
+
+      ufo.prevMovement = "left";
+      ufo.movement = "exploding";
+      ufo.render((new Date).getTime());
+      expect(targetCow.drop).not.toHaveBeenCalled();
+
+      ufo.prevMovement = "beaming";
+      ufo.movement = "exploding";
+      ufo.render((new Date).getTime());
+      expect(targetCow.drop).toHaveBeenCalled();
     });
   });
 
@@ -110,6 +147,29 @@ describe("Ufo", function() {
       ufo.updateFrame(25);
       expect(ufo.frame).toEqual(1);
     });
+    it ("should increase frames to frames.length-1 if movement is set to 'exploding'", function() {
+      var frame = 0;
+      ufo.lastTick = 0;
+      ufo.movement = "exploding";
+      expect(ufo.frame).toEqual(frame);
+      for (var i = 0; i < ufo.frames.length - 1; i++) {
+        frame = i + 1;
+        ufo.updateFrame((new Date).getTime());
+        expect(ufo.frame).toEqual(frame);
+        ufo.lastTick = 0;
+      }
+      ufo.updateFrame((new Date).getTime());
+      expect(ufo.frame).toEqual(frame);
+    });
+    it ("should set ufo.hasExploded to true when ufo.frame is at the final frame after explosion", function() {
+      ufo.frame = 0;
+      ufo.movement = "exploding";
+      for (var i = 0; i < ufo.frames.length; i++) {
+        ufo.updateFrame((new Date).getTime());
+        ufo.lastTick = 0;
+      }
+      expect(ufo.hasExploded).toBe(true);
+    });
   });
 
   describe("setMovementBasedOnCow", function() {
@@ -123,15 +183,23 @@ describe("Ufo", function() {
     it ("should accept one parameter for time", function() {
       expect(ufo.setMovementBasedOnCow.length).toEqual(1);
     });
-    it ("should not change movement if cow is not still", function() {
+    it ("should not change movement if cow is not still or dropping", function() {
       ufo.movement = "something";
       ufo.targetCow = {
         movement: "notStill",
       };
       ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("something");
+
+      //ufo.movement = "something";
+      //ufo.targetCow = {
+        //movement: "dropping"
+      //};
+      //ufo.setMovementBasedOnCow(time);
+      //expect(ufo.movement).not.toBe("something");
     });
-    it ("should move left if targetCow.x+5 is less than ufo.x", function() {
+    it ("should move left if targetCow.x+5 is less than ufo.x and cow is still or dropping", function() {
+      ufo.movement = "something";
       ufo.targetCow = { 
         x: 5,
        movement: "still",
@@ -139,8 +207,18 @@ describe("Ufo", function() {
       ufo.x = 15;
       ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("left");
+
+      ufo.movement = "something";
+      ufo.targetCow = { 
+        x: 5,
+       movement: "dropping",
+      };
+      ufo.x = 15;
+      ufo.setMovementBasedOnCow(time);
+      expect(ufo.movement).toBe("left");
     });
-    it ("should move right if ufo.x is less than targetCow.x-5", function() {
+    it ("should move right if ufo.x is less than targetCow.x-5 and cow is still or dropping", function() {
+      ufo.movement = "something";
       ufo.targetCow = { 
         x: 15,
        movement: "still",
@@ -148,8 +226,18 @@ describe("Ufo", function() {
       ufo.x = 5;
       ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("right");
+
+      ufo.movement = "something";
+      ufo.targetCow = { 
+        x: 15,
+       movement: "dropping",
+      };
+      ufo.x = 5;
+      ufo.setMovementBasedOnCow(time);
+      expect(ufo.movement).toBe("right");
     });
-    it ("should keep still if x is within 5 of targetCow.x", function() {
+    it ("should keep still if x is within 5 of targetCow.x and cow is still or dropping", function() {
+      ufo.movement = "something";
       ufo.targetCow = { 
         x: 15,
        movement: "still",
@@ -157,9 +245,29 @@ describe("Ufo", function() {
       ufo.x = 10;
       ufo.setMovementBasedOnCow(time);
       expect(ufo.movement).toBe("still");
+
+      ufo.movement = "something";
       ufo.targetCow = { 
         x: 15,
        movement: "still",
+      };
+      ufo.x = 20;
+      ufo.setMovementBasedOnCow(time);
+      expect(ufo.movement).toBe("still");
+
+      ufo.movement = "something";
+      ufo.targetCow = { 
+        x: 15,
+       movement: "dropping",
+      };
+      ufo.x = 10;
+      ufo.setMovementBasedOnCow(time);
+      expect(ufo.movement).toBe("still");
+
+      ufo.movement = "something";
+      ufo.targetCow = { 
+        x: 15,
+       movement: "dropping",
       };
       ufo.x = 20;
       ufo.setMovementBasedOnCow(time);
@@ -173,7 +281,6 @@ describe("Ufo", function() {
       ufo.x = 15;
       expect(ufo.beamTick).not.toEqual(time);
       ufo.setMovementBasedOnCow(time);
-      expect(ufo.movement).toBe("left");
       expect(ufo.beamTick).toEqual(time);
     });
     it ("should set beamTick to time when it moves right", function() {
@@ -184,7 +291,6 @@ describe("Ufo", function() {
       ufo.x = 5;
       expect(ufo.beamTick).not.toEqual(time);
       ufo.setMovementBasedOnCow(time);
-      expect(ufo.movement).toBe("right");
       expect(ufo.beamTick).toEqual(time);
     });
     it ("should set movement to beaming if time is greater than beamTick + beamDelay and beamTick not equal to 0", function() {
@@ -287,6 +393,17 @@ describe("Ufo", function() {
     it ("should exist as a function", function() {
       expect(typeof ufo.explode).toBe("function");
     });
+    it ("should set movement to 'exploding'", function() {
+      expect(ufo.movement).not.toBe("exploding");
+      ufo.explode();
+      expect(ufo.movement).toBe("exploding");
+    });
+    it ("should set a prevMovement based on movement before exploding", function() {
+      expect(ufo.prevMovement).not.toBeDefined();
+      ufo.movement = "left";
+      ufo.explode();
+      expect(ufo.prevMovement).toBe("left");
+    });
     it ("should call ufoBeam.reset()", function() {
       var ufoBeam = {
         reset: function() {},
@@ -342,37 +459,51 @@ describe("Ufo", function() {
   });
 
   describe("moveExplodingUfo", function() {
-    it ("should make some changes to x and y if movement is left", function() {
+    it ("should make some changes to x and y if prevMovement is left", function() {
       var x = ufo.x,
        y = ufo.y;
-    ufo.movement = "left";
+    ufo.prevMovement = "left";
     ufo.moveExplodingUfo();
     expect(ufo.x).not.toBe(x);
     expect(ufo.y).not.toBe(y);
     });
-    it ("should make some changes to x and y if movement is right", function() {
+    it ("should make some changes to x and y if prevMovement is right", function() {
       var x = ufo.x,
        y = ufo.y;
-    ufo.movement = "right";
+    ufo.prevMovement = "right";
     ufo.moveExplodingUfo();
     expect(ufo.x).not.toBe(x);
     expect(ufo.y).not.toBe(y);
     });
-    it ("should change y for still movement", function() {
+    it ("should change y for still prevMovement", function() {
       var x = ufo.x;
       var y = ufo.y;
-      ufo.movement = "still";
+      ufo.prevMovement = "still";
       ufo.moveExplodingUfo();
       expect(ufo.x).toEqual(x);
       expect(ufo.y).not.toEqual(y);
     });
-    it ("should change y for beaming movement", function() {
+    it ("should change y for beaming prevMovement", function() {
       var x = ufo.x;
       var y = ufo.y;
-      ufo.movement = "beaming";
+      ufo.prevMovement = "beaming";
       ufo.moveExplodingUfo();
       expect(ufo.x).toEqual(x);
       expect(ufo.y).not.toEqual(y);
+    });
+    it ("should play explosionSfx only when muteAudio is false", function() {
+      var mockSfx = {
+        play: function() {}
+      };
+      spyOn(mockSfx, 'play');
+      ufo.explosionSfx = [ mockSfx ];
+      ufo.muteAudio = true;
+      ufo.moveExplodingUfo((new Date).getTime());
+      expect(mockSfx.play).not.toHaveBeenCalled();
+
+      ufo.muteAudio = false;
+      ufo.moveExplodingUfo((new Date).getTime());
+      expect(mockSfx.play).toHaveBeenCalled();
     });
   });
 });
