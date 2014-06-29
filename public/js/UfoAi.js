@@ -2,8 +2,8 @@ function UfoAi(canvas) {
   this.canvas = canvas;
   this.lastTick = 0;
   this.ufoDelay = 1500;
-  this.ufoDelayDecay = 50;
-  this.ufoDelayDecayCutoff = 1400;
+  this.ufoDelayDecay = 25;
+  this.ufoDelayDecayCutoff = 500;
 }
 
 UfoAi.prototype.generateUfos = function(ufos, cows, time) {

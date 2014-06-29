@@ -136,7 +136,7 @@ Cow.prototype.moveCow = function(time) {
       this.lastTick = time;
       break;
     case "dropping":
-      this.y += 2;
+      this.y += 4;
       if (this.y >= this.target_y)
         this.movement = "still";
       this.updateFrame();
