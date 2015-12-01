@@ -53,7 +53,7 @@ Background.prototype.drawFg = function(context) {
 Background.prototype.allImagesLoaded = function() {
   var allComplete = true;
   for (var i = 0; i < this.frames.length; i++) {
-    if (this.frames[i].complete == false) {
+    if (this.frames[i].complete === false) {
       allComplete = false;
     }
   }

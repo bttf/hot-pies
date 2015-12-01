@@ -11,33 +11,12 @@ window.requestAnimFrame = (function(){
   };
 })();
 
-var add_event_listeners = function() {
-  body.addEventListener("keydown", key_down, false);
-  body.addEventListener("keyup", key_up, false);
-  body.addEventListener("keypress", key_press, false);
-  body.addEventListener("mousedown", mouse_down, false);
-  // body.addEventListener("mouseup", mouse_up, false);
-  body.addEventListener("mousemove", mouse_move, false);
-};
-
-var key_down = function(e) {
-  game.key_down(e);
-};
-
-var key_up = function(e) {
-  game.key_up(e);
-};
-
-var key_press = function(e) {
-  game.key_press(e);
-};
-
-var mouse_move = function(e) {
-  game.mousemove(e);
-};
-
-var mouse_down = function(e) {
-  game.mouse_down(e);
+var add_event_listeners = function(game) {
+  body.addEventListener("keydown", game.key_down.bind(game), false);
+  body.addEventListener("keyup", game.key_up.bind(game), false);
+  body.addEventListener("keypress", game.key_press.bind(game), false);
+  body.addEventListener("mousedown", game.mouse_down.bind(game), false);
+  body.addEventListener("mousemove", game.mousemove.bind(game), false);
 };
 
 var init_browser = function() {
@@ -51,7 +30,6 @@ var init_browser = function() {
   context.font = "16px Arial";
   context.fillStyle = "black";
   body.appendChild(canvas);
-  add_event_listeners();
   horizon = (canvas.height / 2);
   center_axis = (canvas.width / 2);
   game = new Game(canvas.width, canvas.height);
@@ -62,6 +40,7 @@ var init = function() {
   init_browser();
   //game.init(canvas.width, canvas.height);
   game.init(canvas);
+  add_event_listeners(game);
 };
 
 var loop = function(time) {

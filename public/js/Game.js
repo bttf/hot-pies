@@ -64,7 +64,7 @@ Game.prototype.draw = function(context) {
   context.fillStyle = "red";
   context.font = "bold 16px courier";
   if (this.pause)
-    debugStr += "PAUSED\r\n"
+    debugStr += "PAUSED\r\n";
   debugStr += "ufoDelay: " + this.ufoAi.ufoDelay + "\r\n";
   debugStr += "game.ufos.length: " + this.ufos.length + "\r\n";
   context.fillText(debugStr, 10, 20);
@@ -94,8 +94,8 @@ Game.prototype.mousemove = function(e) {
 
 Game.prototype.mouse_down = function(e) {
   if (this.shotgun.isCocked) {
-    var ufo;
-    if (ufo = this.ufoHit()) {
+    var ufo = this.ufoHit();
+    if (ufo) {
       ufo.explode();
     }
   }
